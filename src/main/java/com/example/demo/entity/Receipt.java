@@ -12,19 +12,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "username")
+@Table(name = "Receipt")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
+public class Receipt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private int id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "invoice_id")
+    private int invoiceId;
+
+    @Column(name = "image_receipt")
+    private byte[] image_receipt;
 
     
 }

@@ -35,9 +35,14 @@ public class Invoice {
 
     @Column(name = "electricUnit")
     private double electricUnit;
+    
+    @Column(name = "image_invoice")
+    private byte[] image_invoice;
 
     @CreationTimestamp
     @Column(name = "createAt")
     private Instant createAt;
+
+    
 
 }
