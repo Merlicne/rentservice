@@ -1,13 +1,13 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Rent;
-import com.example.demo.model.request.RentRequest;
-import com.example.demo.model.response.RentResponse;
+
+import com.example.demo.model.JwtToken;
+import com.example.demo.model.RentModel;
 
 public interface IRentService {
-    public Iterable<RentResponse> getAllRents();
-    public RentResponse getRentById(int id);
-    public RentResponse saveRent(RentRequest rent);
-    public RentResponse updateRent(int id, RentRequest rent);
-    public void deleteRent(int id);
+    public Iterable<RentModel> getAllRents(JwtToken token);
+    public RentModel getRentById(String id, JwtToken token);
+    public RentModel saveRent(RentModel rent, JwtToken token);
+    public RentModel updateRent(String id, RentModel rent, JwtToken token);
+    public void deleteRent(String id, JwtToken token);
 }

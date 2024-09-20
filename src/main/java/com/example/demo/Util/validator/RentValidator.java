@@ -1,53 +1,53 @@
-package com.example.demo.Util.validator;
+package com.example.demo.util.validator;
 
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.RentModel;
 import com.example.demo.model.request.CancelRentRequest;
-import com.example.demo.model.request.RentRequest;
 
 public class RentValidator {
-    public static void validateRentId(int id) {
-        if (id < 0) {
-            throw new BadRequestException("Invalid ID");
+    public static void validateRentId(RentModel rentModel) {
+        if (rentModel.getRentId() == null) {
+            throw new BadRequestException("Invalid rentId");
         }
     }
 
-    public static void validatePeriod(RentRequest rentModel) {
+    public static void validatePeriod(RentModel rentModel) {
         if (rentModel.getPeriod() != 12 ) {
             throw new BadRequestException("Invalid period");
         }
     }
 
-    public static void validateStartDate(RentRequest rentModel) {
+    public static void validateStartDate(RentModel rentModel) {
         System.out.println(rentModel.getStartDate());
-        if (rentModel.getStartDate() == null || rentModel.getStartDate().isEmpty()) {
+        if (rentModel.getStartDate() == null ) {
 
             throw new BadRequestException("Invalid start date");
         }
     }
 
-    // validate createAt
-    public static void validateCreateAt(RentRequest rentModel) {
-        if (rentModel.getCreateAt() == null) {
-            throw new BadRequestException("Invalid createAt");
+    // validate createdAt
+    public static void validateCreatedAt(RentModel rentModel) {
+        if (rentModel.getCreatedAt() == null) {
+            throw new BadRequestException("Invalid createdAt");
         }
     }
 
-    //validate updateAt
-    public static void validateUpdateAt(RentRequest rentModel) {
-        if (rentModel.getUpdateAt() == null) {
-            throw new BadRequestException("Invalid updateAt");
+    //validate updatedAt
+    public static void validateUpdatedAt(RentModel rentModel) {
+        if (rentModel.getUpdatedAt() == null) {
+            throw new BadRequestException("Invalid updatedAt");
         }
     }
 
     // validate dateOut
-    public static void validateDateOut(RentRequest rentModel) {
-        if (rentModel.getDateOut() == null || rentModel.getDateOut().isEmpty()) {
-            throw new BadRequestException("Invalid dateOut");
-        }
-    }
+    // public static void validateDateOut(RentRequest rentModel) {
+    //     if (rentModel.getDateOut() == null) {
+    //         throw new BadRequestException("Invalid dateOut");
+    //     }
+    // }
 
     public static void validateDateOut(CancelRentRequest cancelRentRequest) {
-        if (cancelRentRequest.getDateOut() == null || cancelRentRequest.getDateOut().isEmpty()) {
+        if (cancelRentRequest.getDateOut() == null ) {
             throw new BadRequestException("Invalid dateOut");
         }
     }
@@ -60,13 +60,9 @@ public class RentValidator {
         
     // }
 
-    public static void validateRent(RentRequest rentModel) {
-        // validate
-        validateRentId(rentModel.getRentId());
+    public static void validateRent(RentModel rentModel) {
         validatePeriod(rentModel);
         validateStartDate(rentModel);
-        // validateContract(rentModel);
-
     }
 
 }

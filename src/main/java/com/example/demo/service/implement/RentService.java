@@ -2,24 +2,28 @@ package com.example.demo.service.implement;
 
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
 
-import com.example.demo.Util.DateUtil;
-import com.example.demo.Util.converter.RentConverter;
-import com.example.demo.Util.validator.RentValidator;
-import com.example.demo.Util.validator.TenantValidator;
 import com.example.demo.entity.Rent;
 import com.example.demo.entity.Tenant;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.model.request.RentRequest;
-import com.example.demo.model.request.CancelRentRequest;
-import com.example.demo.model.response.RentResponse;
+import com.example.demo.middleware.JwtService;
+import com.example.demo.model.JwtToken;
+import com.example.demo.model.RentModel;
+import com.example.demo.model.Role;
+import com.example.demo.model.RoomModel;
 import com.example.demo.repository.RentRepository;
 import com.example.demo.repository.TenantRepository;
 import com.example.demo.service.IRentService;
+import com.example.demo.util.converter.RentConverter;
+import com.example.demo.util.validator.RentValidator;
+import com.example.demo.util.validator.RoleValidation;
+import com.example.demo.util.validator.TenantValidator;
+import com.example.demo.webClient.IRoomService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,75 +33,114 @@ public class RentService  implements IRentService {
     private final RentRepository rentRepository;
     private final TenantRepository tenantRepository;
 
-    @Override
-    public Iterable<RentResponse> getAllRents() {
+    private final IRoomService roomService;
+    private final JwtService jwtService;
+
+    public Iterable<RentModel> getAllRents(JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN);
+
         List<Rent> rents = rentRepository.findAllRents();
-        return RentConverter.toRentModels(rents);
+        List<RentModel> rentModels = new ArrayList<>();
+        for (Rent rent : rents) {
+            Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId()).orElseThrow(() -> new NotFoundException("Tenant not found"));
+            RoomModel room = roomService.getRoom(rent.getRoom_id(), token);
+            rentModels.add(RentConverter.toRentModel(rent, tenant, room));
+        }
+        return rentModels;
     }
     
-    @Override
-    public RentResponse getRentById(int id) {
-        Rent rent = rentRepository.findRentById(id).orElseThrow(() -> new NotFoundException("Rent not found"));
-        return RentConverter.toRentModel(rent);
+    public RentModel getRentById(String id, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
+
+        UUID uuid = UUID.fromString(id);
+        Rent rent = rentRepository.findRentById(uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
+        Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId()).orElseThrow(() -> new NotFoundException("Tenant not found"));
+        RoomModel room = roomService.getRoom(rent.getRoom_id(), token);
+        return RentConverter.toRentModel(rent, tenant, room);
     }
 
-    @Override
-    public RentResponse saveRent(RentRequest rentRequest) {
-        
+    public RentModel saveRent(RentModel rentRequest, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN);
+        // validate
         RentValidator.validateRent(rentRequest);
-        Rent rent = RentConverter.toRentEntity(rentRequest);
-
         TenantValidator.validateTenant(rentRequest);
-        Tenant tenant = RentConverter.toTenantEntity(rentRequest);
-        rent.setTenant(tenant);
 
-        Rent r = rentRepository.save(rent);
-        return RentConverter.toRentModel(r);
-    }
-    
-    public RentResponse updateRent(int id, RentRequest rentRequest){
-        // find by id 
-        Rent r = rentRepository.findRentById(id).orElseThrow(() -> new NotFoundException("Rent not found"));
-        
-        rentRequest.setCreateAt(r.getCreateAt());
-
-        RentValidator.validateRent(rentRequest);
         Rent rent = RentConverter.toRentEntity(rentRequest);
-
-        TenantValidator.validateTenant(rentRequest);
         Tenant tenant = RentConverter.toTenantEntity(rentRequest);
 
-        rent.setTenant(tenant);
-
-        r = rentRepository.save(rent);
-        return RentConverter.toRentModel(r);
+        RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
         
+
+        tenant = tenantRepository.save(tenant);
+        rent.setTenant(tenant);
+        
+        rent = rentRepository.save(rent);
+
+        return RentConverter.toRentModel(rent, tenant, room);
     }
     
-    public void deleteRent(int id){
-        Rent rent = rentRepository.findRentById(id).orElseThrow(() -> new NotFoundException("Rent not found"));
+    public RentModel updateRent(String rent_id, RentModel rentRequest, JwtToken token){
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN);
+        // rent
+        UUID rent_uuid = UUID.fromString(rent_id);
+        Rent rent = rentRepository.findRentById(rent_uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
         
-        rent.setDeleteAt(LocalDateTime.now());
+        RentValidator.validateRent(rentRequest);
+        Rent new_rent = RentConverter.toRentEntity(rentRequest);
+        new_rent.setCreatedAt(rent.getCreatedAt());
+        
+        //tenant
+        UUID tenant_uuid = rent.getTenant().getId();
+        Tenant tenant = tenantRepository.findTenantById(tenant_uuid).orElseThrow(() -> new NotFoundException("Tenant not found"));
+        
+        TenantValidator.validateTenant(rentRequest);
+        Tenant new_tenant = RentConverter.toTenantEntity(rentRequest);
+        new_tenant.setCreatedAt(tenant.getCreatedAt());
+        new_tenant.setId(tenant_uuid);
+
+        // save to db
+        new_tenant = tenantRepository.save(new_tenant);
+        new_rent.setTenant(new_tenant);
+        new_rent = rentRepository.save(new_rent);
+        RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);        
+        return RentConverter.toRentModel(new_rent, new_tenant, room);
+    }
+        
+
+        
+    
+    public void deleteRent(String id, JwtToken token){
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN);
+
+        UUID uuid = UUID.fromString(id);
+        Rent rent = rentRepository.findRentById(uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
+        
+        rent.setDeletedAt(LocalDateTime.now());
         rentRepository.save(rent);
-
     }
 
-    public Iterable<RentResponse> getDeletedRents() {
-        List<Rent> rents = rentRepository.findDeletedRents();
-        return RentConverter.toRentModels(rents);
-    }
+    // public Iterable<RentResponse> getDeletedRents() {
+    //     List<Rent> rents = rentRepository.findDeletedRents();
+    //     return RentConverter.toRentModels(rents);
+    // }
 
-    public RentResponse cancelRent(int rent_id, CancelRentRequest cancelRentRequest) {
-        Rent r = rentRepository.findRentById(rent_id).orElseThrow(() -> new NotFoundException("Rent not found"));
+    // public RentResponse cancelRent(String id, CancelRentRequest cancelRentRequest) {
+    //     UUID uuid = UUID.fromString(id);
+    //     Rent r = rentRepository.findRentById(uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
         
-        RentValidator.validateDateOut(cancelRentRequest);
-        LocalDateTime createAt = r.getCreateAt();
+    //     RentValidator.validateDateOut(cancelRentRequest);
+    //     LocalDateTime createdAt = r.getCreatedAt();
         
-        r.setDateOut(DateUtil.toLocalDate(cancelRentRequest.getDateOut()));
-        r.setCreateAt(createAt);
-        return RentConverter.toRentModel(rentRepository.save(r));
+    //     r.setDateOut(DateUtil.toLocalDate(cancelRentRequest.getDateOut()));
+    //     r.setCreatedAt(createdAt);
+    //     return RentConverter.toRentModel(rentRepository.save(r));
 
-    }
+    // }
     
     
 
