@@ -23,9 +23,9 @@ import com.example.demo.model.TenantModel;
 import com.example.demo.repository.InvoiceRepository;
 import com.example.demo.service.IInvoiceService;
 import com.example.demo.service.IRentService;
-import com.example.demo.util.converter.InvoiceConverter;
-import com.example.demo.util.validator.InvoiceValidator;
-import com.example.demo.util.validator.RoleValidation;
+import com.example.demo.util_.converter.InvoiceConverter;
+import com.example.demo.util_.validator.InvoiceValidator;
+import com.example.demo.util_.validator.RoleValidation;
 import com.example.demo.webClient.IDormService;
 import com.example.demo.webClient.IRoomService;
 

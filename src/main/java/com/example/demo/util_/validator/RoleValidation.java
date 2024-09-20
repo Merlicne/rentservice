@@ -1,4 +1,4 @@
-package com.example.demo.util.validator;
+package com.example.demo.util_.validator;
 
 import com.example.demo.model.Role;
 import com.example.demo.exception.ForbiddenException;

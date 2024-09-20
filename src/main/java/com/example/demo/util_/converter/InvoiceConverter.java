@@ -1,4 +1,4 @@
-package com.example.demo.util.converter;
+package com.example.demo.util_.converter;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import com.example.demo.model.InvoiceModel;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.RoomModel;
 import com.example.demo.model.TenantModel;
-import com.example.demo.util.DateUtil;
+import com.example.demo.util_.DateUtil;
 
 public class InvoiceConverter {
     public static InvoiceModel toModel(Invoice invoiceEntity, 
