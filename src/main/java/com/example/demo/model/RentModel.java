@@ -1,4 +1,4 @@
-package com.example.demo.model.request;
+package com.example.demo.model;
 
 // import jakarta.persistence.Column;
 import java.time.Instant;
@@ -20,24 +20,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class RentRequest {
-    private int rentId;
-    private int roomId;
+public class RentModel {
+    private String rentId;
     private int period;
     private String startDate;  // in the format "dd-MM-yyyy"
     private String dateOut; // in the format "dd-MM-yyyy"
-    private TenantRequest tenant;
-
-    @Data
-    public static class TenantRequest {
-        private int tenantId;
-        private String firstName;
-        private String lastName;
-        private String phoneNum;
-    }
     
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
-    private LocalDateTime deleteAt;
-    // private byte[] contract; // pdf, png, jpg file
+    private RoomModel room;
+    private TenantModel tenant;
+    
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
 }
