@@ -38,8 +38,8 @@ public class Receipt {
     private long size;
 
 
-    @Column(name = "uri")
-    private String uri;
+    // @Column(name = "uri")
+    // private String uri;
 
     @Lob
     @Column(name = "image_receipt")
