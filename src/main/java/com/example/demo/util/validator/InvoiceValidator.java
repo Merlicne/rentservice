@@ -1,4 +1,4 @@
-package com.example.demo.util_.validator;
+package com.example.demo.util.validator;
 
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.InvoiceModel;

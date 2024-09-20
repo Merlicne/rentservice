@@ -1,4 +1,4 @@
-package com.example.demo.util_.converter;
+package com.example.demo.util.converter;
 
 import java.io.IOException; // Add this import statement
 
@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Receipt;
 import com.example.demo.model.ReceiptModel;
-import com.example.demo.util_.ImageUtil;
+import com.example.demo.util.ImageUtil;
 
 public class ReceiptConverter {
 

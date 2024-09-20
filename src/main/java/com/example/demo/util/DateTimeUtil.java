@@ -1,4 +1,4 @@
-package com.example.demo.util_;
+package com.example.demo.util;
 
 public class DateTimeUtil {
 

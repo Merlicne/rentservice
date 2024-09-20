@@ -1,4 +1,4 @@
-package com.example.demo.util_.converter;
+package com.example.demo.util.converter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +9,7 @@ import com.example.demo.entity.Tenant;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.RoomModel;
 import com.example.demo.model.TenantModel;
-import com.example.demo.util_.DateUtil;
+import com.example.demo.util.DateUtil;
 
 
 public class RentConverter {

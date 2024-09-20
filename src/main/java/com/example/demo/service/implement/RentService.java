@@ -19,10 +19,10 @@ import com.example.demo.model.RoomModel;
 import com.example.demo.repository.RentRepository;
 import com.example.demo.repository.TenantRepository;
 import com.example.demo.service.IRentService;
-import com.example.demo.util_.converter.RentConverter;
-import com.example.demo.util_.validator.RentValidator;
-import com.example.demo.util_.validator.RoleValidation;
-import com.example.demo.util_.validator.TenantValidator;
+import com.example.demo.util.converter.RentConverter;
+import com.example.demo.util.validator.RentValidator;
+import com.example.demo.util.validator.RoleValidation;
+import com.example.demo.util.validator.TenantValidator;
 import com.example.demo.webClient.IRoomService;
 
 import lombok.RequiredArgsConstructor;

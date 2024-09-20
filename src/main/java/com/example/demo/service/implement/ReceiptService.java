@@ -11,8 +11,8 @@ import com.example.demo.model.Role;
 import com.example.demo.repository.InvoiceRepository;
 import com.example.demo.repository.ReceiptRepository;
 import com.example.demo.service.IReceiptService;
-import com.example.demo.util_.converter.ReceiptConverter;
-import com.example.demo.util_.validator.RoleValidation;
+import com.example.demo.util.converter.ReceiptConverter;
+import com.example.demo.util.validator.RoleValidation;
 import com.example.demo.exception.*;
 import com.example.demo.middleware.JwtService;
 
