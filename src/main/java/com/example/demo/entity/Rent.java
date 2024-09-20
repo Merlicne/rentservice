@@ -4,6 +4,7 @@ package com.example.demo.entity;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -42,10 +43,11 @@ import org.hibernate.annotations.Type;
 @Setter
 public class Rent {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "rent_id")
-    private int rent_id;
+    private UUID rent_id;
     
+    //room service
     @Column(name = "room_id")
     private int room_id;
 
@@ -54,7 +56,6 @@ public class Rent {
     
     @Column(name = "start_date")
     private LocalDate start_date;
-
     
     @Column(name = "dateOut")
     private LocalDate dateOut;
@@ -62,26 +63,19 @@ public class Rent {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "tenant_id")
     @JsonBackReference
-    private Tenant tenant; // fk
+    private Tenant tenant; 
 
-    
-
-
-    // @Lob
-    // @Type(type = "org.hibernate.type.ImageType")
-    // @Column(name = "contract")
-    // private byte[] contract;
 
     @CreationTimestamp
-    @Column(name = "createAt")
-    private LocalDateTime createAt;
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updateAt")
-    private LocalDateTime updateAt;
+    @Column(name = "updatedAt")
+    private LocalDateTime updatedAt;
 
     // default NULL
-    @Column(name = "deleteAt")
-    private LocalDateTime deleteAt;
+    @Column(name = "deletedAt")
+    private LocalDateTime deletedAt;
 
 }

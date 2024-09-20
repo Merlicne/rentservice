@@ -1,19 +1,14 @@
 package com.example.demo.entity;
 
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
-// import org.hibernate.annotations.Where;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +16,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.Instant;
+import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "Tenants")
@@ -35,9 +31,9 @@ import java.time.Instant;
 
 public class Tenant {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private int Id;
+    private UUID Id;
 
     @Column(name = "firstName")
     private String firstName;
@@ -48,9 +44,15 @@ public class Tenant {
     @Column(name = "phoneNum")
     private String phoneNum;
 
-    @Column(name = "deletedAt")
-    private Instant deletedAt;
+    @CreationTimestamp
+    @Column(name = "createdAt")
+    private LocalDateTime createdAt;
 
-    // @OneToOne(mappedBy = "tenant")
-    // private Rent rent;
+    @UpdateTimestamp
+    @Column(name = "updatedAt")
+    private LocalDateTime updatedAt;
+
+    // default NULL
+    @Column(name = "deletedAt")
+    private LocalDateTime deletedAt;
 }
