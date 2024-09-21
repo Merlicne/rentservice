@@ -3,6 +3,11 @@ package com.example.demo.entity;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.example.demo.model.Role;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +21,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.time.LocalDateTime;
 
@@ -29,7 +37,7 @@ import java.time.LocalDateTime;
 @Setter
 @SQLDelete(sql = "UPDATE Tenants SET deletedAt = NOW() WHERE id = ?")
 
-public class Tenant {
+public class Tenant implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -44,6 +52,14 @@ public class Tenant {
     @Column(name = "phoneNum")
     private String phoneNum;
 
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "token")
+    private String token;
+
+    private Role role;
+
     @CreationTimestamp
     @Column(name = "createdAt")
     private LocalDateTime createdAt;
@@ -55,4 +71,42 @@ public class Tenant {
     // default NULL
     @Column(name = "deletedAt")
     private LocalDateTime deletedAt;
+
+
+
+    @Override
+    public String getUsername() {
+        return token;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return deletedAt == null;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return deletedAt == null;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return deletedAt == null;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return deletedAt == null;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
 }

@@ -3,6 +3,8 @@ package com.example.demo.util.converter;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.entity.Invoice;
 import com.example.demo.entity.Rent;
 import com.example.demo.model.DormModel;

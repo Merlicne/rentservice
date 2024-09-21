@@ -8,11 +8,16 @@ import java.util.zip.Inflater;
 
 import org.springframework.core.io.ByteArrayResource;
 
+import com.example.demo.exception.InternalServerException;
+
 
 public class ImageUtil {
     public static final int BITE_SIZE = 4 * 1024;
 
-    public static byte[] compressImage(byte[] data) {
+    public static byte[] compressImage(byte[] data)  {
+        // if (true) {
+        //     throw new InternalServerException("Error compressing image");
+        // }
 
         Deflater deflater = new Deflater();
         deflater.setLevel(Deflater.BEST_COMPRESSION);
@@ -24,10 +29,12 @@ public class ImageUtil {
         while (!deflater.finished()) {
             int size = deflater.deflate(tmp);
             outputStream.write(tmp, 0, size);
+
         }
         try {
             outputStream.close();
         } catch (Exception e) {
+            
         }
         return outputStream.toByteArray();
     }

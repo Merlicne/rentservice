@@ -28,6 +28,7 @@ public class RentModel {
     
     private RoomModel room;
     private TenantModel tenant;
+    private byte[] imageContract;
     
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

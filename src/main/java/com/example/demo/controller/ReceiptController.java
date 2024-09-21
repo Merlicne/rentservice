@@ -32,7 +32,7 @@ public class ReceiptController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         ReceiptModel response = receiptService.createReceipt(invoice_id, file, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK, "File uploaded successfully", response);
+        return new ResponseBody<>(HttpStatus.OK.value(), "File uploaded successfully", response);
     }
 
     @GetMapping("/receipt/{id}")
@@ -41,7 +41,7 @@ public class ReceiptController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         ReceiptModel response = receiptService.getReceiptById(id, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK, "Receipt retrieved successfully", response);
+        return new ResponseBody<>(HttpStatus.OK.value(), "Receipt retrieved successfully", response);
     }
 
     @PutMapping("/receipt/{id}")
@@ -52,7 +52,7 @@ public class ReceiptController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         ReceiptModel response = receiptService.updateReceipt(id, file, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK, "Receipt updated successfully", response);
+        return new ResponseBody<>(HttpStatus.OK.value(), "Receipt updated successfully", response);
     }
 
     @DeleteMapping("/receipt/delete/{id}")
@@ -61,7 +61,7 @@ public class ReceiptController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         receiptService.deleteReceipt(id, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK, "Receipt deleted successfully", "Receipt deleted successfully");
+        return new ResponseBody<>(HttpStatus.OK.value(), "Receipt deleted successfully", "Receipt deleted successfully");
     }
     
 

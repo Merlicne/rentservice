@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
@@ -28,7 +30,7 @@ public class RentController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         Iterable<RentModel> rents = rentService.getAllRents(jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Rents retrieved successfully",rents);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Rents retrieved successfully",rents);
     }
     
     @GetMapping("/rent/{rent_id}")
@@ -37,7 +39,7 @@ public class RentController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
         
         RentModel rent = rentService.getRentById(rent_id, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Rent retrieved successfully",rent);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Rent retrieved successfully",rent);
     }
 
     // @GetMapping("/rent/deleted")
@@ -47,21 +49,26 @@ public class RentController {
     // }
     
     @PostMapping("/rent")
-    public ResponseBody<RentModel> createRent(@RequestHeader("Authorization") String token, @RequestBody RentModel rentRequest) {
+    public ResponseBody<RentModel> createRent(@RequestHeader("Authorization") String token, 
+                                            @RequestBody RentModel rentRequest,
+                                            @RequestParam("image") MultipartFile file) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
-        RentModel rent = rentService.saveRent(rentRequest, jwtToken);
-        return new ResponseBody<>(HttpStatus.CREATED,"Rent created successfully",rent);
+        RentModel rent = rentService.saveRent(rentRequest, file, jwtToken);
+        return new ResponseBody<>(HttpStatus.CREATED.value(),"Rent created successfully",rent);
     }
 
     @PutMapping("/rent/{rent_id}")
-    public ResponseBody<RentModel> updateRent(@RequestHeader("Authorization") String token, @PathVariable String rent_id, @RequestBody RentModel rentRequest) {
+    public ResponseBody<RentModel> updateRent(@RequestHeader("Authorization") String token, 
+                                                @PathVariable String rent_id, 
+                                                @RequestBody RentModel rentRequest,
+                                                @RequestParam("image") MultipartFile file) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
-        RentModel rent = rentService.updateRent(rent_id, rentRequest, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Rent updated successfully",rent);
+        RentModel rent = rentService.updateRent(rent_id, rentRequest, file,  jwtToken);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Rent updated successfully",rent);
     }
 
     // @PutMapping("/rent/early-cancel/{rent_id}")
@@ -76,7 +83,7 @@ public class RentController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         rentService.deleteRent(rent_id, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Rent deleted successfully","Rent deleted successfully");
+        return new ResponseBody<>(HttpStatus.OK.value(),"Rent deleted successfully","Rent deleted successfully");
     }
 
 

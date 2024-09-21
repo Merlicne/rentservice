@@ -19,4 +19,6 @@ public class TenantModel {
     private String firstName;
     private String lastName;
     private String phoneNum;
+    private String password;
+    private String token;
 }

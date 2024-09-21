@@ -2,7 +2,7 @@ package com.example.demo.util.validator;
 
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.RentModel;
-import com.example.demo.model.request.CancelRentRequest;
+// import com.example.demo.model.request.CancelRentRequest;
 
 public class RentValidator {
     public static void validateRentId(RentModel rentModel) {
@@ -46,11 +46,11 @@ public class RentValidator {
     //     }
     // }
 
-    public static void validateDateOut(CancelRentRequest cancelRentRequest) {
-        if (cancelRentRequest.getDateOut() == null ) {
-            throw new BadRequestException("Invalid dateOut");
-        }
-    }
+    // public static void validateDateOut(CancelRentRequest cancelRentRequest) {
+    //     if (cancelRentRequest.getDateOut() == null ) {
+    //         throw new BadRequestException("Invalid dateOut");
+    //     }
+    // }
 
 
     // public static void validateContract(RentModel rentModel) {

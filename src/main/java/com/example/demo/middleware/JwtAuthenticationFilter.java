@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 
                 Claims claims = jwtService.extractAllClaims(token);
                 String tokenIssuer = claims.getIssuer();
-                if (!jwtService.isIssuerValid(tokenIssuer)){
+                if (!jwtService.isTokenIssuerValid(tokenIssuer)){
                     throw new UnAuthorizedException("Invalid token issuer");
                 }
 

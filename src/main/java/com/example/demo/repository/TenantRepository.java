@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.example.demo.entity.Tenant;
+import java.util.List;
+
 
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, UUID>{
@@ -25,5 +27,8 @@ public interface TenantRepository extends JpaRepository<Tenant, UUID>{
     // get deleted tenant
     @Query("SELECT t FROM Tenant t WHERE t.deletedAt IS NOT NULL")
     public Iterable<Tenant> findDeletedTenants();
+
+    @Query("SELECT t FROM Tenant t WHERE t.token = ?1")
+    public Optional<Tenant> findByUsername(String token);
 
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponseBody  {
-    private HttpStatus status;
+    private int status;
     private String message;
     
 }

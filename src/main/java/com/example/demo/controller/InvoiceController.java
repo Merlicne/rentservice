@@ -28,7 +28,7 @@ public class InvoiceController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         Iterable<InvoiceModel> invoices = invoiceService.getAllInvoices(jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Invoices retrieved successfully",invoices);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Invoices retrieved successfully",invoices);
     }
 
     @GetMapping("/invoice/{invoice_id}")
@@ -37,7 +37,7 @@ public class InvoiceController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
         
         InvoiceModel invoice = invoiceService.getInvoiceById(invoice_id, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Invoice retrieved successfully",invoice);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Invoice retrieved successfully",invoice);
     }
 
     @GetMapping("/rent/{rent_id}/invoice")
@@ -46,7 +46,7 @@ public class InvoiceController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         Iterable<InvoiceModel> invoices = invoiceService.getInvoiceByRentId(rent_id, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Invoices retrieved successfully",invoices);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Invoices retrieved successfully",invoices);
     }
 
     @PostMapping("/invoice")
@@ -55,7 +55,7 @@ public class InvoiceController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         InvoiceModel invoice = invoiceService.createInvoice(invoiceModel, jwtToken);
-        return new ResponseBody<>(HttpStatus.CREATED,"Invoice created successfully",invoice);
+        return new ResponseBody<>(HttpStatus.CREATED.value(), "Invoice created successfully",invoice);
     }
 
     @PutMapping("/invoice/{invoice_id}")
@@ -64,7 +64,7 @@ public class InvoiceController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         InvoiceModel invoice = invoiceService.updateInvoiceById(invoice_id, invoiceModel, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Invoice updated successfully",invoice);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Invoice updated successfully",invoice);
     }
 
     @DeleteMapping("/invoice/{invoice_id}")
@@ -73,6 +73,6 @@ public class InvoiceController {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         invoiceService.deleteInvoiceById(invoice_id, jwtToken);
-        return new ResponseBody<>(HttpStatus.OK,"Invoice deleted successfully",null);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Invoice deleted successfully",null);
     }
 }
