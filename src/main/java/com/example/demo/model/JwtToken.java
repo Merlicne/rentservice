@@ -5,12 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserModel {
+@NoArgsConstructor
+@Builder
+public class JwtToken {
+
+    private String token;
+    private long expiresIn;
     
-    private Long id;
-    private String name;
+    
 }

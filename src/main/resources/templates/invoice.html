@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Invoice Form</title>
+    <!-- <link href='https://fonts.googleapis.com/css?family=Sarabun' rel='stylesheet'> -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Prompt" rel="stylesheet"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .invoice-container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            /* background-color: gray; */
+        }
+        .invoice-header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+        .company-info {
+            /* text-align: right; */
+            width: 45%;
+        }
+        .client-info {
+            text-align: right;
+            width: 45%;
+        }
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .invoice-table th, .invoice-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        .invoice-table th {
+            background-color: #f0f0f0;
+        }
+        .total-section {
+            display: flex;
+            justify-content: space-between;
+        }
+        .total-section table {
+            width: 40%;
+            border-collapse: collapse;
+        }
+        .total-section td {
+            padding-left: 8px;
+            border: 1px solid #ccc;
+        }
+        .total-column td {
+            padding-right: 8px;
+            /* align: right; */
+            border: 1px solid #ccc;
+            /* column-span: ; */
+        }
+        .total-section .total-label {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .total-qrcode {
+            display: flex;
+            flex-direction: column;
+        }
+        .footer {
+            text-align: left;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="company-info">
+                <h2>Company Name</h2>
+                <p>457/12 หมู่ 12 ซอยแคนนาดา ถนนสมิทซ์ จังหวัดโตรอนโต 24157 <br/>โทร 078-251-2466 </p>
+            </div>
+            <div class="client-info">
+                <h2>ใบแจ้งชำระ</h2>
+                <p th:text="'เลขที่ใบเสร็จ ' + ${invoice_id}"></p>
+            </div>
+        </div>
+
+        <h3>รายละเอียดผู้เช่า</h3>
+        <table>
+            <tr>
+                <td><div style="padding-right: 20px;">ชื่อ</div></td>
+                <td th:text="${tenant_fname}"></td>
+            </tr>
+            <tr>
+                <td><div style="padding-right: 20px;">ตึก</div></td>
+                <td >A</td>
+            </tr>
+            <tr>
+                <td><div style="padding-right: 20px;">เลขที่ห้อง</div></td>
+                <td th:text="${rent_roomid}"></td>
+            </tr>
+            <tr>
+                <td><div style="padding-right: 20px;">เบอร์โทร</div></td>
+                <td th:text="${tenant_phone}">078-251-2466</td>
+            </tr>
+        </table>
+        
+        <hr width="100%" size="2" color="gray"/>
+        
+        <h3>รายละเอียดการชำระ</h3>
+        <div class="total-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>รายการ</th>
+                        <th>หน่วย</th>
+                        <th>เป็นเงิน</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>
+                        <div style="margin-right: 20px;">ค่าห้องพัก</div>
+                    </td>
+                    <td></td>
+                    <td align="right" style="padding-right: 10px;" class="total-column">4000</td>
+                </tr>
+                <tr>
+                    <td >
+                        <div style="padding-right: 20px;">ค่าน้ำ</div>
+                    </td>
+                    <!-- <td class="total-column">เหมาจ่าย</td> -->
+                    <td align="right" style="padding-right: 10px;" class="total-column">เหมาจ่าย</td>
+                    <td align="right" style="padding-right: 10px;" class="total-column">150</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="padding-right: 20px;">ค่าไฟ</div>
+                    </td>
+                    <td align="right" style="padding-right: 10px;" class="total-column" th:text="${invoice_elect}"></td>
+                    <td align="right" style="padding-right: 10px;" class="total-column" th:text="${invoice_elect_cal}"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="right" class="total-label">
+                        <div style="padding-right: 20px;">ทั้งหมด</div>
+                    </td>
+                    <td align="right" style="padding-right: 10px;" th:text="${total}"></td>
+                </tr>
+            </table>
+            <div class="total-qrcode">
+                <!-- <img height="150px" th:src="${invoice_qrcode}"> -->
+                 <!-- src="https://promptpay.io/0931695545/100.png" -->
+                <p style="text-align: center;">สแกนเพื่อชำระ</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p th:text="'จดค่าน้ำและค่าไฟเมื่อ ' + ${invoice_recordAt}"></p>
+            <p>กรุณาชำระภายในวันที่ 05 สิงหาคม 2567</p>
+        </div>
+    </div>
+
+</body>
+</html>
