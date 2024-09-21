@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class RentController {
     private final IRentService rentService;
 
@@ -41,12 +43,6 @@ public class RentController {
         RentModel rent = rentService.getRentById(rent_id, jwtToken);
         return new ResponseBody<>(HttpStatus.OK.value(),"Rent retrieved successfully",rent);
     }
-
-    // @GetMapping("/rent/deleted")
-    // public ResponseBody<Iterable<RentResponse>> getDeletedRents() {
-    //     Iterable<RentResponse> rents = rentService.getDeletedRents();
-    //     return new ResponseBody<>(HttpStatus.OK,"Deleted rents retrieved successfully",rents);
-    // }
     
     @PostMapping("/rent")
     public ResponseBody<RentModel> createRent(@RequestHeader("Authorization") String token, 
@@ -70,12 +66,6 @@ public class RentController {
         RentModel rent = rentService.updateRent(rent_id, rentRequest, file,  jwtToken);
         return new ResponseBody<>(HttpStatus.OK.value(),"Rent updated successfully",rent);
     }
-
-    // @PutMapping("/rent/early-cancel/{rent_id}")
-    // public ResponseBody<RentResponse> earlyCancelRent(@PathVariable String rent_id, @RequestBody CancelRentRequest cancelRentRequest) {
-    //     RentResponse rent = rentService.cancelRent(rent_id, cancelRentRequest);
-    //     return new ResponseBody<>(HttpStatus.OK,"Rent cancelled successfully",rent);
-    // }
 
     @DeleteMapping("/rent/{rent_id}")
     public ResponseBody<String> deleteRent(@RequestHeader("Authorization") String token, @PathVariable String rent_id) {
