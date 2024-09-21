@@ -16,7 +16,6 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -26,8 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.entity.Rent;
 import com.example.demo.entity.Tenant;
-import com.example.demo.exception.NotFoundException;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.middleware.JwtService;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
@@ -36,16 +33,12 @@ import com.example.demo.model.RoomModel;
 import com.example.demo.repository.RentRepository;
 import com.example.demo.repository.TenantRepository;
 import com.example.demo.service.implement.RentService;
-import com.example.demo.util.converter.RentConverter;
 import com.example.demo.util.converter.TenantConverter;
-import com.example.demo.util.validator.RentValidator;
-import com.example.demo.util.validator.RoleValidation;
-import com.example.demo.util.validator.TenantValidator;
 import com.example.demo.webClient.IRoomService;
 
 
 @ExtendWith(MockitoExtension.class)
-public class RentServiceTest {
+class RentServiceTest {
 
     @Mock
     private RentRepository rentRepository;
@@ -74,7 +67,7 @@ public class RentServiceTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        String path = "C:\\Users\\lenovo\\Documents\\softdev\\project\\rentservice\\src\\test\\java\\com\\example\\demo\\df09d2098b1b3909e70578b2b8ea7905.jpg";
+        String path = "src\\test\\java\\com\\example\\demo\\df09d2098b1b3909e70578b2b8ea7905.jpg";
         String fname = "df09d2098b1b3909e70578b2b8ea7905.jpg";
         String contentType = "image/jpeg";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
