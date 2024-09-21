@@ -44,12 +44,12 @@ public class ApplicationConfiguration {
         return WebClient.builder();
     }
 
-    @Bean
+    @Bean(name = "webClientDormService")
     public WebClient webClientDormClient(WebClient.Builder builder) {
         return builder.baseUrl("lb://dorm-service/api/v1").build();
     }
 
-    @Bean
+    @Bean(name = "webClientRoomService")
     public WebClient webClientRoomClient(WebClient.Builder builder) {
         return builder.baseUrl("lb://room-service/api/v1").build();
     }
