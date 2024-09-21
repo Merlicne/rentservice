@@ -13,9 +13,6 @@ public class ImageUtil {
 
     public static byte[] compressImage(byte[] data) {
 
-        
-
-
         Deflater deflater = new Deflater();
         deflater.setLevel(Deflater.BEST_COMPRESSION);
         deflater.setInput(data);

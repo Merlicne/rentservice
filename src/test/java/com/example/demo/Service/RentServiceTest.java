@@ -9,6 +9,9 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import java.util.Optional;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
+
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +40,8 @@ import com.example.demo.util.converter.TenantConverter;
 import com.example.demo.webClient.IRoomService;
 
 
+
+
 @ExtendWith(MockitoExtension.class)
 class RentServiceTest {
 
@@ -55,27 +60,27 @@ class RentServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private MultipartFile multipartFile;
+
     @InjectMocks
     private RentService rentService;
+
+
 
     private JwtToken token;
     private Rent rent;
     private Tenant tenant;
     private RentModel rentModel;
     private RoomModel roomModel;
-    private MultipartFile multipartFile;
+
 
     @BeforeEach
     void setUp() throws IOException {
-        String path = "src\\test\\java\\com\\example\\demo\\df09d2098b1b3909e70578b2b8ea7905.jpg";
-        String fname = "df09d2098b1b3909e70578b2b8ea7905.jpg";
-        String contentType = "image/jpeg";
+        // Mock 
+        byte[] fileContent = new byte[] { 1, 2, 3, 4, 5 }; 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        
-        File file = new File(path);
-        byte[] fileContent = Files.readAllBytes(file.toPath());
-        
-        multipartFile = new MockMultipartFile(fname, fileContent);
+
 
         token = JwtToken.builder()
                 .token("token")
@@ -119,7 +124,7 @@ class RentServiceTest {
     }
 
     @Test
-    void testGetAllRents() {
+    void testGetAllRents(){
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findAllRents()).thenReturn(List.of(rent));
         when(tenantRepository.findTenantById(any(UUID.class))).thenReturn(Optional.of(tenant));
@@ -146,12 +151,13 @@ class RentServiceTest {
     }
 
     @Test
-    void testSaveRent() {
+    void testSaveRent() throws IOException {
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+        when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
 
         RentModel result = rentService.saveRent(rentModel, multipartFile, token);
 
@@ -160,7 +166,7 @@ class RentServiceTest {
     }
 
     @Test
-    void testUpdateRent() {
+    void testUpdateRent() throws IOException {
         UUID rentId = UUID.randomUUID();
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
@@ -168,6 +174,7 @@ class RentServiceTest {
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
+        when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
 
         RentModel result = rentService.updateRent(rentId.toString(), rentModel, multipartFile, token);
 
