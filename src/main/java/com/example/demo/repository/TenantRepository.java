@@ -7,14 +7,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.example.demo.entity.Tenant;
-import java.util.List;
 
 
 @Repository
 public interface TenantRepository extends JpaRepository<Tenant, UUID>{
-    
-    // @Query("SELECT u FROM User u WHERE u.name = ?1")
-    // User findUserByName(String name);
 
     // get tenant which not deleted
     @Query("SELECT t FROM Tenant t WHERE t.deletedAt IS NULL")

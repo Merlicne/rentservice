@@ -1,6 +1,5 @@
 package com.example.demo.service.implement;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -100,38 +99,38 @@ public class RentService implements IRentService {
             return RentConverter.toRentModel(rent, tenant, room);
     }
 
-    public RentModel updateRent(String rent_id, RentModel rentRequest, MultipartFile file, JwtToken token) {
+    public RentModel updateRent(String rentId, RentModel rentRequest, MultipartFile file, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
         // rent
-        UUID rent_uuid = UUID.fromString(rent_id);
-        Rent rent = rentRepository.findRentById(rent_uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
+        UUID rentUuid = UUID.fromString(rentId);
+        Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
 
         RentValidator.validateRent(rentRequest);
-        Rent new_rent;
+        Rent newRent;
         try {
-             new_rent = RentConverter.toRentEntity(rentRequest, file);
+             newRent = RentConverter.toRentEntity(rentRequest, file);
         } catch (Exception e) {
             throw new BadRequestException("Failed to save image" + e.getMessage());
         }
-            new_rent.setCreatedAt(rent.getCreatedAt());
+            newRent.setCreatedAt(rent.getCreatedAt());
 
             // tenant
-            UUID tenant_uuid = rent.getTenant().getId();
-            Tenant tenant = tenantRepository.findTenantById(tenant_uuid)
+            UUID tenantUuid = rent.getTenant().getId();
+            Tenant tenant = tenantRepository.findTenantById(tenantUuid)
                     .orElseThrow(() -> new NotFoundException("Tenant not found"));
 
             TenantValidator.validateTenant(rentRequest);
-            Tenant new_tenant = TenantConverter.toTenantEntity(rentRequest);
-            new_tenant.setCreatedAt(tenant.getCreatedAt());
-            new_tenant.setId(tenant_uuid);
+            Tenant newTenant = TenantConverter.toTenantEntity(rentRequest);
+            newTenant.setCreatedAt(tenant.getCreatedAt());
+            newTenant.setId(tenantUuid);
 
             // save to db
-            new_tenant = tenantRepository.save(new_tenant);
-            new_rent.setTenant(new_tenant);
-            new_rent = rentRepository.save(new_rent);
+            newTenant = tenantRepository.save(newTenant);
+            newRent.setTenant(newTenant);
+            newRent = rentRepository.save(newRent);
             RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
-            return RentConverter.toRentModel(new_rent, new_tenant, room);
+            return RentConverter.toRentModel(newRent, newTenant, room);
     }
 
     public void deleteRent(String id, JwtToken token) {
@@ -145,24 +144,5 @@ public class RentService implements IRentService {
         rentRepository.save(rent);
     }
 
-    // public Iterable<RentResponse> getDeletedRents() {
-    // List<Rent> rents = rentRepository.findDeletedRents();
-    // return RentConverter.toRentModels(rents);
-    // }
-
-    // public RentResponse cancelRent(String id, CancelRentRequest
-    // cancelRentRequest) {
-    // UUID uuid = UUID.fromString(id);
-    // Rent r = rentRepository.findRentById(uuid).orElseThrow(() -> new
-    // NotFoundException("Rent not found"));
-
-    // RentValidator.validateDateOut(cancelRentRequest);
-    // LocalDateTime createdAt = r.getCreatedAt();
-
-    // r.setDateOut(DateUtil.toLocalDate(cancelRentRequest.getDateOut()));
-    // r.setCreatedAt(createdAt);
-    // return RentConverter.toRentModel(rentRepository.save(r));
-
-    // }
 
 }

@@ -4,13 +4,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtil {
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-    public static LocalDate toLocalDate(String date_string) {
-        return LocalDate.parse(date_string, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+    private DateUtil() {
+        throw new IllegalStateException("Utility class");
+    }
+
+
+    public static LocalDate toLocalDate(String dateString) {
+        return LocalDate.parse(dateString, formatter);
     }
 
     public static String toString(LocalDate date) {
-        return date.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        return date.format(formatter);
     }
 }

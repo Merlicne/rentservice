@@ -2,7 +2,7 @@ package com.example.demo.util.validator;
 
 import com.example.demo.model.Role;
 import com.example.demo.exception.ForbiddenException;
-import com.example.demo.exception.UnAuthorizedException;
+import com.example.demo.exception.UnAuthorizedException_;
 
 public class RoleValidation {
 
@@ -12,7 +12,7 @@ public class RoleValidation {
 
     public static void allowRoles(Role userRole, Role... roles) {
         if (userRole == null) {
-            throw new UnAuthorizedException("You are not authorized to access this resource");
+            throw new UnAuthorizedException_("You are not authorized to access this resource");
         }
         for (Role role : roles) {
             if (role.toString().equals(userRole.toString())) {

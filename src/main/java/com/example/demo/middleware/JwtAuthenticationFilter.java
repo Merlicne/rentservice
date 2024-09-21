@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
-import com.example.demo.exception.UnAuthorizedException;
+import com.example.demo.exception.UnAuthorizedException_;
 import com.example.demo.model.Role;
 
 import io.jsonwebtoken.Claims;
@@ -57,16 +57,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 final Role role = jwtService.extractRole(token);
 
                 if (jwtService.isTokenExpired(token)) {
-                    throw new UnAuthorizedException("Token expired");
+                    throw new UnAuthorizedException_("Token expired");
                 }
                 if (username == null || role == null) {
-                    throw new UnAuthorizedException("Invalid token");
+                    throw new UnAuthorizedException_("Invalid token");
                 }
                 
                 Claims claims = jwtService.extractAllClaims(token);
                 String tokenIssuer = claims.getIssuer();
                 if (!jwtService.isTokenIssuerValid(tokenIssuer)){
-                    throw new UnAuthorizedException("Invalid token issuer");
+                    throw new UnAuthorizedException_("Invalid token issuer");
                 }
 
                 SimpleGrantedAuthority authority = new SimpleGrantedAuthority(tokenIssuer);

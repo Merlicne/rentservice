@@ -1,7 +1,6 @@
 package com.example.demo.model.response;
 
 
-import org.springframework.http.HttpStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

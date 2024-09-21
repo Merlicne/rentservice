@@ -6,7 +6,7 @@ import com.example.demo.model.InvoiceModel;
 public class InvoiceValidator {
 
     public static void validateInvoiceId(InvoiceModel invoiceModel) {
-        if (invoiceModel.getInvoice_id() == null) {
+        if (invoiceModel.getInvoiceId() == null) {
             throw new BadRequestException("Invoice ID is required");
         }
     }

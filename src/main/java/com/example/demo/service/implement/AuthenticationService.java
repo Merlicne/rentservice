@@ -12,10 +12,8 @@ import com.example.demo.exception.NotFoundException;
 import com.example.demo.middleware.JwtService;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.LoginRequest;
-import com.example.demo.model.TenantModel;
 import com.example.demo.repository.TenantRepository;
 import com.example.demo.service.IAuthenticationService;
-import com.example.demo.util.TenantTokenGenerator;
 
 import lombok.RequiredArgsConstructor;
 

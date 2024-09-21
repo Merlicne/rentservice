@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
-import java.time.LocalDate;
 
 
 import lombok.Builder;
@@ -10,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 public class InvoiceModel {
-    private String invoice_id;  
+    private String invoiceId;  
     
     private double waterUnit;  // input
     private double waterPrice;

@@ -22,8 +22,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler{
         return new ResponseEntity<>(new ErrorResponseBody(HttpStatus.BAD_REQUEST.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UnAuthorizedException.class)
-    public ResponseEntity<ErrorResponseBody> handleUnauthorizedException(UnAuthorizedException ex) {
+    @ExceptionHandler(UnAuthorizedException_.class)
+    public ResponseEntity<ErrorResponseBody> handleUnauthorizedException(UnAuthorizedException_ ex) {
         return new ResponseEntity<>(new ErrorResponseBody(HttpStatus.UNAUTHORIZED.value(), ex.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
@@ -40,7 +40,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler{
     // default
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseBody> handleAllException(Exception ex) {
-        // return new ResponseEntity<>(new ResponseBody(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage().substring(0, 100)), HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(new ErrorResponseBody(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

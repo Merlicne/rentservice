@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 
 import com.example.demo.entity.Rent;
-import com.example.demo.entity.Tenant;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.TenantModel;
 

@@ -1,11 +1,7 @@
 package com.example.demo.model;
 
-// import jakarta.persistence.Column;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

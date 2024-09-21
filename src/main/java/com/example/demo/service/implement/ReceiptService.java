@@ -47,7 +47,7 @@ public class ReceiptService implements IReceiptService {
         invoiceRepository.findById(UUID.fromString(invoiceID)).orElseThrow(() -> new NotFoundException("Invoice not found"));
 
         ReceiptModel receiptModel = new ReceiptModel();
-        receiptModel.setInvoice_id(invoiceID);
+        receiptModel.setInvoiceId(invoiceID);
 
         try {
             Receipt receipt = ReceiptConverter.toEntity(receiptModel, file);
