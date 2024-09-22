@@ -59,7 +59,7 @@ public class Rent {
     @JsonBackReference
     private Tenant tenant;
     
-    @Lob
+    // @Lob
     @Column(name = "image_contract", columnDefinition="bytea")
     private byte[] image_contract;
 

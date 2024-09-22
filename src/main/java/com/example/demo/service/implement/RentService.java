@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RentService implements IRentService {
     private final RentRepository rentRepository;
     private final TenantRepository tenantRepository;
@@ -145,6 +146,7 @@ public class RentService implements IRentService {
     }
 
 // contract image management
+    @Transactional
     public ContractModel saveContract(String rent_id, MultipartFile file, JwtToken token) throws IOException {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
@@ -164,6 +166,7 @@ public class RentService implements IRentService {
         return RentConverter.toContractModel(rent);
     }
 
+    
     public ContractModel getContract(String rent_id, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
@@ -174,6 +177,7 @@ public class RentService implements IRentService {
         return RentConverter.toContractModel(rent);
     }
 
+    @Transactional
     public ContractModel updateContract(String rent_id, MultipartFile file, JwtToken token) throws IOException {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
