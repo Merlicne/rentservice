@@ -36,7 +36,7 @@ public class DormService implements IDormService {
     public DormModel getDormInfo(JwtToken token) {
         ResponseBody<DormModel> response =  webClient.get()
                 .uri("/dorm")
-                .header("Authorization", token.getToken())
+                .header("Authorization", "Bearer " + token.getToken())
                 .retrieve()
                 .bodyToMono(ResponseBody.class)
                 .block();

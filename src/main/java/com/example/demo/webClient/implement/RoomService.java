@@ -25,7 +25,7 @@ public class RoomService implements IRoomService {
     public RoomModel getRoom(int id, JwtToken token) {
         ResponseBody<RoomModel> response =  webClient.get()
                 .uri("/room/{id}", id)
-                .header("Authorization", token.getToken())
+                .header("Authorization","Bearer "+ token.getToken())
                 .retrieve()
                 .bodyToMono(ResponseBody.class)
                 .block();   
