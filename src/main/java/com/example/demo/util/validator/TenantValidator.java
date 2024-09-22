@@ -29,9 +29,26 @@ public class TenantValidator {
         }
     }
 
+    // validate password
+    public static void validatePassword(RentModel rentModel) {
+        if (rentModel.getTenant().getPassword() == null || rentModel.getTenant().getPassword().isEmpty()) {
+            throw new BadRequestException("Tenant password cannot be empty");
+        }
+    }
+
+    // validate token
+    public static void validateToken(RentModel rentModel) {
+        if (rentModel.getTenant().getToken() == null || rentModel.getTenant().getToken().isEmpty()) {
+            throw new BadRequestException("Tenant token cannot be empty");
+        }
+    }
+
+
     public static void validateTenant(RentModel rentModel) {
         validateTenantFirstName(rentModel);
         validateTenantLastName(rentModel);
         validateTenantPhoneNum(rentModel);
+        validatePassword(rentModel);
+        validateToken(rentModel);
     }
 }
