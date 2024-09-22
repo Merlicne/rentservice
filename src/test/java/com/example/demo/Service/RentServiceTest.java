@@ -164,7 +164,7 @@ class RentServiceTest {
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+        when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
         // when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
 
         RentModel result = rentService.saveRent(rentModel, token);

@@ -93,8 +93,9 @@ public class RentService implements IRentService {
 
         rent.setTenant(tenant_repo);
         rent = rentRepository.save(rent);
-
-        return RentConverter.toRentModel(rent, tenant_repo, room);
+        RentModel rentModel =  RentConverter.toRentModel(rent, tenant_repo, room);
+        
+        return rentModel;
     }
 
     @Transactional

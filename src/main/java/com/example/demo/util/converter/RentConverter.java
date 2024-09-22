@@ -104,6 +104,7 @@ public class RentConverter {
                 .firstName(tenant.getFirstName())
                 .lastName(tenant.getLastName())
                 .phoneNum(tenant.getPhoneNum())
+                .password(tenant.getPassword())
                 .token(tenant.getToken())
                 .build())
             // .imageContract(ImageUtil.decompressImage(rent.getImage_contract()))
