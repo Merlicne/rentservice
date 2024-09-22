@@ -81,20 +81,20 @@ public class RentService implements IRentService {
         TenantValidator.validateTenant(rentRequest);
 
         Rent rent = RentConverter.toRentEntity(rentRequest);
-        Tenant tenant = TenantConverter.toTenantEntity(rentRequest);
-
+        
         RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
-
+        
         // save tenant to repository
+        Tenant tenant = TenantConverter.toTenantEntity(rentRequest);
         tenant.setToken(TenantTokenGenerator.generateToken(tenant.getPhoneNum()));
         tenant.setPassword(passwordEncoder.encode(tenant.getPhoneNum()));
         tenant.setRole(Role.TENANT);
-        tenant = tenantRepository.save(tenant);
+        Tenant tenant_repo = tenantRepository.save(tenant);
 
-        rent.setTenant(tenant);
+        rent.setTenant(tenant_repo);
         rent = rentRepository.save(rent);
 
-        return RentConverter.toRentModel(rent, tenant, room);
+        return RentConverter.toRentModel(rent, tenant_repo, room);
     }
 
     @Transactional

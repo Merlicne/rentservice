@@ -159,7 +159,7 @@ class RentServiceTest {
     }
 
     @Test
-    void testSaveRent() throws IOException {
+    void testSaveRent()  {
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);

@@ -51,7 +51,8 @@ public class RentController {
     @PostMapping("/rent")
     public ResponseBody<RentModel> createRent(@RequestHeader("Authorization") String token, 
                                             @RequestBody RentModel rentRequest) {
-        token = token.substring(7); 
+        
+                                                token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
         RentModel rent = rentService.saveRent(rentRequest, jwtToken);
