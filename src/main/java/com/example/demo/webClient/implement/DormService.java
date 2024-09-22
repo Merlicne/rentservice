@@ -4,10 +4,12 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 
 import com.example.demo.model.BuildingModel;
 import com.example.demo.model.DormModel;
 import com.example.demo.model.JwtToken;
+import com.example.demo.model.RoomModel;
 import com.example.demo.model.response.ResponseBody;
 import com.example.demo.webClient.IDormService;
 
@@ -27,7 +29,7 @@ public class DormService implements IDormService {
                 .uri("/building/{id}", id)
                 .header("Authorization", token.getToken())
                 .retrieve()
-                .bodyToMono(ResponseBody.class)
+                .bodyToMono(new ParameterizedTypeReference<ResponseBody<BuildingModel>>() {})
                 .block();   
         return response.getData();
     }
@@ -38,7 +40,7 @@ public class DormService implements IDormService {
                 .uri("/dorm")
                 .header("Authorization", "Bearer " + token.getToken())
                 .retrieve()
-                .bodyToMono(ResponseBody.class)
+                .bodyToMono(new ParameterizedTypeReference<ResponseBody<DormModel>>() {})
                 .block();
         return response.getData();
     }
