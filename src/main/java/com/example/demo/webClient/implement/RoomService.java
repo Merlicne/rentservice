@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.ParameterizedTypeReference;
 
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RoomModel;
@@ -27,7 +28,7 @@ public class RoomService implements IRoomService {
                 .uri("/room/{id}", id)
                 .header("Authorization","Bearer "+ token.getToken())
                 .retrieve()
-                .bodyToMono(ResponseBody.class)
+                .bodyToMono(new ParameterizedTypeReference<ResponseBody<RoomModel>>() {})
                 .block();   
         return response.getData();
     }
