@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 
+import java.io.IOException;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.ContractModel;
@@ -14,7 +16,7 @@ public interface IRentService {
     public RentModel updateRent(String id, RentModel rent,  JwtToken token);
     public void deleteRent(String id, JwtToken token);
 
-    public ContractModel saveContract(String rent_id, MultipartFile file, JwtToken token);
+    public ContractModel saveContract(String rent_id, MultipartFile file, JwtToken token) throws IOException;
     public ContractModel getContract(String rent_id, JwtToken token);
-    public ContractModel updateContract(String rent_id, MultipartFile file, JwtToken token);
+    public ContractModel updateContract(String rent_id, MultipartFile file, JwtToken token) throws IOException;
 }

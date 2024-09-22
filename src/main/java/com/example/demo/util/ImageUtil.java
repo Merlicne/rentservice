@@ -34,17 +34,22 @@ public class ImageUtil {
     }
 
     public static byte[] decompressImage(byte[] data) {
+        
+
         Inflater inflater = new Inflater();
         inflater.setInput(data);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
         byte[] tmp = new byte[4 * 1024];
         try {
             while (!inflater.finished()) {
+                System.out.println("11111");
                 int count = inflater.inflate(tmp);
+                System.out.println("22222");
                 outputStream.write(tmp, 0, count);
             }
             outputStream.close();
         } catch (Exception exception) {
+            System.out.println("Error ===="+exception.getMessage());
         }
         return outputStream.toByteArray();
     }

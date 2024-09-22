@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.io.IOException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,7 +83,7 @@ public class RentController {
     @PostMapping("/rent/{rent_id}/contract")
     public ResponseBody<ContractModel> createContract(@RequestHeader("Authorization") String token, 
                                                 @PathVariable String rent_id,
-                                                @RequestParam("image") MultipartFile file) {
+                                                @RequestParam("image") MultipartFile file) throws IOException {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
@@ -101,7 +103,7 @@ public class RentController {
     @PutMapping("/rent/{rent_id}/contract")
     public ResponseBody<ContractModel> updateContract(@RequestHeader("Authorization") String token, 
                                                 @PathVariable String rent_id,
-                                                @RequestParam("image") MultipartFile file) {
+                                                @RequestParam("image") MultipartFile file) throws IOException {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 

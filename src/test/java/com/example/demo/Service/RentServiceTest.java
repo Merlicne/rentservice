@@ -75,12 +75,12 @@ class RentServiceTest {
     private RentModel rentModel;
     private RoomModel roomModel;
     private ContractModel contractModel;
-
+    private byte[] fileContent;
 
     @BeforeEach
     void setUp() throws IOException {
         // Mock 
-        byte[] fileContent = new byte[] { 1, 2, 3, 4, 5 }; 
+        fileContent = new byte[] { 1, 2, 3, 4, 5 }; 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
 
@@ -205,7 +205,7 @@ class RentServiceTest {
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
-        when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
+        when(multipartFile.getBytes()).thenReturn(fileContent);
 
 
         ContractModel result = rentService.saveContract(rent.getRent_id().toString(), multipartFile, token);

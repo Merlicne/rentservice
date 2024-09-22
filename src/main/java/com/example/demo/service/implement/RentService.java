@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class RentService implements IRentService {
         RoleValidation.allowRoles(role, Role.ADMIN);
 
         List<Rent> rents = rentRepository.findAllRents();
+
         List<RentModel> rentModels = new ArrayList<>();
         for (Rent rent : rents) {
             Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId())
@@ -79,20 +81,17 @@ public class RentService implements IRentService {
         TenantValidator.validateTenant(rentRequest);
 
         Rent rent = RentConverter.toRentEntity(rentRequest);
-        
         Tenant tenant = TenantConverter.toTenantEntity(rentRequest);
 
         RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
 
+        // save tenant to repository
         tenant.setToken(TenantTokenGenerator.generateToken(tenant.getPhoneNum()));
         tenant.setPassword(passwordEncoder.encode(tenant.getPhoneNum()));
-
         tenant.setRole(Role.TENANT);
-
         tenant = tenantRepository.save(tenant);
 
         rent.setTenant(tenant);
-
         rent = rentRepository.save(rent);
 
         return RentConverter.toRentModel(rent, tenant, room);
@@ -142,23 +141,23 @@ public class RentService implements IRentService {
     }
 
 // contract image management
-    public ContractModel saveContract(String rent_id, MultipartFile file, JwtToken token) {
+    public ContractModel saveContract(String rent_id, MultipartFile file, JwtToken token) throws IOException {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
 
         UUID rentUuid = UUID.fromString(rent_id);
         Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
-
+        ContractModel contractModel;
         try {
-            rent.setImage_contract(file.getBytes());
+            // rent.setImage_contract(file.getBytes());
+            contractModel= RentConverter.toContractEntity(rent, file);
         } catch (Exception e) {
             throw new BadRequestException("Failed to save image" + e.getMessage());
         }
+
+        rent.setImage_contract(contractModel.getImage_contract());
         rent = rentRepository.save(rent);
-        return ContractModel.builder()
-                .rent_id(rent_id)
-                .image_contract(rent.getImage_contract())
-                .build();
+        return RentConverter.toContractModel(rent);
     }
 
     public ContractModel getContract(String rent_id, JwtToken token) {
@@ -168,29 +167,26 @@ public class RentService implements IRentService {
         UUID rentUuid = UUID.fromString(rent_id);
         Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
 
-        return ContractModel.builder()
-                .rent_id(rent_id)
-                .image_contract(rent.getImage_contract())
-                .build();
+        return RentConverter.toContractModel(rent);
     }
 
-    public ContractModel updateContract(String rent_id, MultipartFile file, JwtToken token) {
+    public ContractModel updateContract(String rent_id, MultipartFile file, JwtToken token) throws IOException {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
 
         UUID rentUuid = UUID.fromString(rent_id);
         Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
-
+        ContractModel contractModel;
         try {
-            rent.setImage_contract(file.getBytes());
+            
+            contractModel = RentConverter.toContractEntity(rent, file);
         } catch (Exception e) {
             throw new BadRequestException("Failed to save image" + e.getMessage());
         }
+        rent.setImage_contract(contractModel.getImage_contract());
         rent = rentRepository.save(rent);
-        return ContractModel.builder()
-                .rent_id(rent_id)
-                .image_contract(rent.getImage_contract())
-                .build();
+        
+        return RentConverter.toContractModel(rent);
     }
 
 

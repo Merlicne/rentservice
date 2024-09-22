@@ -51,8 +51,8 @@ public class InvoiceService implements IInvoiceService {
         InvoiceValidator.validateInvoice(invoiceModel);
 
         RentModel rentModel = rentService.getRentById(invoiceModel.getRent().getRentId(), token);
-        DormModel dormModel = dormService.getDormInfo(token);
         TenantModel tenantModel = rentModel.getTenant();
+        DormModel dormModel = dormService.getDormInfo(token);
         RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token);
         
         BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuildingID(), token);
