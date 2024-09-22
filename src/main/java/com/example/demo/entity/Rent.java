@@ -1,11 +1,16 @@
 package com.example.demo.entity;
 
+import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -60,6 +65,9 @@ public class Rent {
     private Tenant tenant;
     
     // @Lob
+    // @Type(type="org.hibernate.type.PrimitiveByteArrayBlobType", value = java.lang.Byte[])
+    // @Type(type  = "org.hibernate.type.BinaryType")
+    @JdbcTypeCode(Types.VARBINARY)
     @Column(name = "image_contract", columnDefinition="bytea")
     private byte[] image_contract;
 

@@ -162,8 +162,8 @@ public class RentService implements IRentService {
         }
 
         rent.setImage_contract(contractModel.getImage_contract());
-        rent = rentRepository.save(rent);
-        return RentConverter.toContractModel(rent);
+        Rent rent_ = rentRepository.save(rent);
+        return RentConverter.toContractModel(rent_);
     }
 
     
