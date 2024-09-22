@@ -166,13 +166,13 @@ class RentServiceTest {
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
         // when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
-
+        
         RentModel result = rentService.saveRent(rentModel, token);
-
+        
         assertNotNull(result);
         verify(rentRepository, times(1)).save(any(Rent.class));
     }
-
+    
     @Test
     void testUpdateRent() throws IOException {
         UUID rentId = UUID.randomUUID();
@@ -182,6 +182,7 @@ class RentServiceTest {
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
+        when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
         // when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
 
         RentModel result = rentService.updateRent(rentId.toString(), rentModel, token);

@@ -78,8 +78,7 @@ public class RentService implements IRentService {
         RoleValidation.allowRoles(role, Role.ADMIN);
         // validate
         RentValidator.validateRent(rentRequest);
-        TenantValidator.validateTenant(rentRequest);
-
+        
         Rent rent = RentConverter.toRentEntity(rentRequest);
         
         RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
@@ -89,8 +88,9 @@ public class RentService implements IRentService {
         tenant.setToken(TenantTokenGenerator.generateToken(tenant.getPhoneNum()));
         tenant.setPassword(passwordEncoder.encode(tenant.getPhoneNum()));
         tenant.setRole(Role.TENANT);
+        TenantValidator.validateTenant(tenant);
         Tenant tenant_repo = tenantRepository.save(tenant);
-
+        
         rent.setTenant(tenant_repo);
         rent = rentRepository.save(rent);
         RentModel rentModel =  RentConverter.toRentModel(rent, tenant_repo, room);
@@ -113,13 +113,16 @@ public class RentService implements IRentService {
 
         // tenant
         UUID tenantUuid = rent.getTenant().getId();
-        Tenant tenant = tenantRepository.findTenantById(tenantUuid)
-                .orElseThrow(() -> new NotFoundException("Tenant not found"));
+        Tenant tenant = tenantRepository.findTenantById(tenantUuid).orElseThrow(() -> new NotFoundException("Tenant not found"));
 
-        TenantValidator.validateTenant(rentRequest);
         Tenant newTenant = TenantConverter.toTenantEntity(rentRequest);
+        newTenant.setToken(TenantTokenGenerator.generateToken(newTenant.getPhoneNum()));
+        newTenant.setPassword(passwordEncoder.encode(newTenant.getPhoneNum()));
+        newTenant.setRole(Role.TENANT);
         newTenant.setCreatedAt(tenant.getCreatedAt());
         newTenant.setId(tenantUuid);
+        TenantValidator.validateTenant(newTenant);
+
 
         // save to db
         newTenant = tenantRepository.save(newTenant);

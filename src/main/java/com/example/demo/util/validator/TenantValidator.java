@@ -1,54 +1,54 @@
 package com.example.demo.util.validator;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.RentModel;
+import com.example.demo.entity.Tenant;
 
 
 public class TenantValidator {
-    // public static void validateTenantId(RentRequest rentModel) {
-    //     if (UUID.fromString(rentModel.getTenant().getTenantId()) == null) {
+    // public static void validateTenantId(RentRequest Tenant) {
+    //     if (UUID.fromString(Tenant()Id()) == null) {
     //         throw new BadRequestException("Tenant ID must be greater than 0");
     //     }
     // }
 
-    public static void validateTenantFirstName(RentModel rentModel) {
-        if (rentModel.getTenant().getFirstName() == null || rentModel.getTenant().getFirstName().isEmpty()) {
+    public static void validateTenantFirstName(Tenant Tenant) {
+        if (Tenant.getFirstName() == null || Tenant.getFirstName().isEmpty()) {
             throw new BadRequestException("Tenant first name cannot be empty");
         }
     }
 
-    public static void validateTenantLastName(RentModel rentModel) {
-        if (rentModel.getTenant().getLastName() == null || rentModel.getTenant().getLastName().isEmpty()) {
+    public static void validateTenantLastName(Tenant Tenant) {
+        if (Tenant.getLastName() == null || Tenant.getLastName().isEmpty()) {
             throw new BadRequestException("Tenant last name cannot be empty");
         }
     }
 
-    public static void validateTenantPhoneNum(RentModel rentModel) {
-        if (rentModel.getTenant().getPhoneNum() == null || rentModel.getTenant().getPhoneNum().isEmpty()) {
+    public static void validateTenantPhoneNum(Tenant Tenant) {
+        if (Tenant.getPhoneNum() == null || Tenant.getPhoneNum().isEmpty()) {
             throw new BadRequestException("Tenant phone number cannot be empty");
         }
     }
 
     // validate password
-    public static void validatePassword(RentModel rentModel) {
-        if (rentModel.getTenant().getPassword() == null || rentModel.getTenant().getPassword().isEmpty()) {
+    public static void validatePassword(Tenant Tenant) {
+        if (Tenant.getPassword() == null || Tenant.getPassword().isEmpty()) {
             throw new BadRequestException("Tenant password cannot be empty");
         }
     }
 
     // validate token
-    public static void validateToken(RentModel rentModel) {
-        if (rentModel.getTenant().getToken() == null || rentModel.getTenant().getToken().isEmpty()) {
+    public static void validateToken(Tenant Tenant) {
+        if (Tenant.getToken() == null || Tenant.getToken().isEmpty()) {
             throw new BadRequestException("Tenant token cannot be empty");
         }
     }
 
 
-    public static void validateTenant(RentModel rentModel) {
-        validateTenantFirstName(rentModel);
-        validateTenantLastName(rentModel);
-        validateTenantPhoneNum(rentModel);
-        validatePassword(rentModel);
-        validateToken(rentModel);
+    public static void validateTenant(Tenant Tenant) {
+        validateTenantFirstName(Tenant);
+        validateTenantLastName(Tenant);
+        validateTenantPhoneNum(Tenant);
+        validatePassword(Tenant);
+        validateToken(Tenant);
     }
 }

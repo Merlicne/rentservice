@@ -23,21 +23,21 @@ public class TenantConverter {
             .build();
     }
 
-    public static Tenant toTenantEntity(TenantModel tenantModel) {
-        UUID tenantId = null;
-        if (tenantModel.getId() != null) {
-            tenantId = UUID.fromString(tenantModel.getId());
-        }
+    // public static Tenant toTenantEntity(TenantModel tenantModel) {
+    //     UUID tenantId = null;
+    //     if (tenantModel.getId() != null) {
+    //         tenantId = UUID.fromString(tenantModel.getId());
+    //     }
 
-        return Tenant.builder()
-            .Id(tenantId)
-            .firstName(tenantModel.getFirstName())
-            .lastName(tenantModel.getLastName())
-            .phoneNum(tenantModel.getPhoneNum())
-            .password(tenantModel.getPassword())
-            .token(tenantModel.getToken())
-            .build();
-    }
+    //     return Tenant.builder()
+    //         .Id(tenantId)
+    //         .firstName(tenantModel.getFirstName())
+    //         .lastName(tenantModel.getLastName())
+    //         .phoneNum(tenantModel.getPhoneNum())
+    //         .password(tenantModel.getPassword())
+    //         .token(tenantModel.getToken())
+    //         .build();
+    // }
 
     public static TenantModel toTenantModel(Tenant tenant) {
         return TenantModel.builder()
