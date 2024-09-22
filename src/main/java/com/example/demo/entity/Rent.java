@@ -60,7 +60,7 @@ public class Rent {
     private Tenant tenant;
     
     @Lob
-    @Column(name = "image_contract")
+    @Column(name = "image_contract", columnDefinition="clob")
     private byte[] image_contract;
 
 

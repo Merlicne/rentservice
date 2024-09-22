@@ -42,7 +42,7 @@ public class Receipt {
     // private String uri;
 
     @Lob
-    @Column(name = "image_receipt")
+    @Column(name = "image_receipt", columnDefinition="clob")
     private byte[] image_receipt;
 
     @CreationTimestamp
