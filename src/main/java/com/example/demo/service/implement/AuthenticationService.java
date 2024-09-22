@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Tenant;
 import com.example.demo.exception.NotFoundException;
@@ -24,7 +25,7 @@ public class AuthenticationService implements IAuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    @Override
+    @Transactional
     public JwtToken login(LoginRequest loginRequest) {
         
         Tenant tenant = tenantRepository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new NotFoundException("Tenant not found"));

@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Invoice;
 // import com.example.demo.entity.Rent;
@@ -42,7 +43,7 @@ public class InvoiceService implements IInvoiceService {
     private final JwtService jwtService;
 
 
-    @Override
+    @Transactional
     public InvoiceModel createInvoice(InvoiceModel invoiceModel, JwtToken token){ 
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
@@ -129,7 +130,7 @@ public class InvoiceService implements IInvoiceService {
         return invoiceModels;
     }
 
-    @Override
+    @Transactional
     public InvoiceModel updateInvoiceById(String invoice_id, InvoiceModel invoiceModel, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
@@ -146,7 +147,7 @@ public class InvoiceService implements IInvoiceService {
     }
 
 
-    @Override
+    @Transactional
     public void deleteInvoiceById(String invoice_id, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);

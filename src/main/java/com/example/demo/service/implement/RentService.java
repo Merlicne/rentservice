@@ -2,6 +2,7 @@ package com.example.demo.service.implement;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -69,6 +70,7 @@ public class RentService implements IRentService {
         return RentConverter.toRentModel(rent, tenant, room);
     }
 
+    @Transactional
     public RentModel saveRent(RentModel rentRequest, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
@@ -96,6 +98,7 @@ public class RentService implements IRentService {
         return RentConverter.toRentModel(rent, tenant, room);
     }
 
+    @Transactional
     public RentModel updateRent(String rentId, RentModel rentRequest,  JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
@@ -126,6 +129,7 @@ public class RentService implements IRentService {
         return RentConverter.toRentModel(newRent, newTenant, room);
     }
 
+    @Transactional
     public void deleteRent(String id, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);

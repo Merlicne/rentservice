@@ -2,6 +2,7 @@ package com.example.demo.service.implement;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Receipt;
@@ -39,7 +40,7 @@ public class ReceiptService implements IReceiptService {
     }
 
 
-    @Override
+    @Transactional
     public ReceiptModel createReceipt(String invoiceID, MultipartFile file, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
@@ -59,7 +60,7 @@ public class ReceiptService implements IReceiptService {
     }
 
 
-    @Override
+    @Transactional
     public ReceiptModel updateReceipt(String invoiceID, MultipartFile file, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
@@ -76,7 +77,7 @@ public class ReceiptService implements IReceiptService {
         }
     }
 
-    @Override
+    @Transactional
     public void deleteReceipt(String re_id, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
