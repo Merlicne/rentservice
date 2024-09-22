@@ -27,7 +27,7 @@ public class DormService implements IDormService {
     public BuildingModel getBuilding(int id, JwtToken token) {
         ResponseBody<BuildingModel> response =  webClient.get()
                 .uri("/building/{id}", id)
-                .header("Authorization", token.getToken())
+                .header("Authorization", "Bearer " + token.getToken())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<BuildingModel>>() {})
                 .block();   
