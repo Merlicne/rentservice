@@ -48,8 +48,7 @@ public class RentController {
     // TODO เอา image ออก
     @PostMapping("/rent")
     public ResponseBody<RentModel> createRent(@RequestHeader("Authorization") String token, 
-                                            @RequestBody RentModel rentRequest,
-                                            @RequestParam("image") MultipartFile file) {
+                                            @RequestBody RentModel rentRequest) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
