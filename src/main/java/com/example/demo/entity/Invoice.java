@@ -36,10 +36,11 @@ public class Invoice {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "rent_id")
-    @JsonBackReference
-    private Rent rent; 
+    // @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // @JoinColumn(name = "rent_id")
+    // @JsonBackReference
+    @Column(name = "rent_id")
+    private UUID rent_id; 
 
     @Column(name = "waterUnit")
     private double waterUnit;
