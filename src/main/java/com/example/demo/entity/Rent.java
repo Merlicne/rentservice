@@ -64,11 +64,11 @@ public class Rent {
     @JsonBackReference
     private Tenant tenant;
     
-    // @Lob
+    @Lob
     // @Type(type="org.hibernate.type.PrimitiveByteArrayBlobType", value = java.lang.Byte[])
     // @Type(type  = "org.hibernate.type.BinaryType")
-    @JdbcTypeCode(Types.VARBINARY)
-    @Column(name = "image_contract", columnDefinition="bytea")
+    // @JdbcTypeCode(Types.VARBINARY)
+    @Column(name = "image_contract")
     private byte[] image_contract;
 
 

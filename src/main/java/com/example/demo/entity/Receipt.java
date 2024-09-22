@@ -45,7 +45,7 @@ public class Receipt {
 
     // @Lob
     @JdbcTypeCode(Types.VARBINARY)
-    @Column(name = "image_receipt", columnDefinition="bytea")
+    @Column(name = "image_receipt")
     private byte[] image_receipt;
 
     @CreationTimestamp
