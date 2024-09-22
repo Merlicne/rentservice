@@ -38,7 +38,8 @@ public class ReceiptController {
     }
 
     @GetMapping("/receipt/{id}")
-    public ResponseBody<ReceiptModel> getReceiptById(@RequestHeader("Authorization") String token, @RequestParam("id") String id) {
+    public ResponseBody<ReceiptModel> getReceiptById(@RequestHeader("Authorization") String token, 
+                                                    @RequestParam("id") String id) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
@@ -58,7 +59,8 @@ public class ReceiptController {
     }
 
     @DeleteMapping("/receipt/delete/{id}")
-    public ResponseBody<String> deleteReceipt(@RequestHeader("Authorization") String token, @RequestParam("id") String id) {
+    public ResponseBody<String> deleteReceipt(@RequestHeader("Authorization") String token, 
+                                                @RequestParam("id") String id) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 

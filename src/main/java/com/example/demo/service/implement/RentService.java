@@ -14,6 +14,7 @@ import com.example.demo.entity.Tenant;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.middleware.JwtService;
+import com.example.demo.model.ContractModel;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.Role;
@@ -68,38 +69,34 @@ public class RentService implements IRentService {
         return RentConverter.toRentModel(rent, tenant, room);
     }
 
-    public RentModel saveRent(RentModel rentRequest, MultipartFile file, JwtToken token) {
+    public RentModel saveRent(RentModel rentRequest, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
         // validate
         RentValidator.validateRent(rentRequest);
         TenantValidator.validateTenant(rentRequest);
 
-        Rent rent;
-        try {
-            rent = RentConverter.toRentEntity(rentRequest, file);
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to save image" + e.getMessage());
-        }
-            Tenant tenant = TenantConverter.toTenantEntity(rentRequest);
+        Rent rent = RentConverter.toRentEntity(rentRequest);
+        
+        Tenant tenant = TenantConverter.toTenantEntity(rentRequest);
 
-            RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
+        RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
 
-            tenant.setToken(TenantTokenGenerator.generateToken(tenant.getPhoneNum()));
-            tenant.setPassword(passwordEncoder.encode(tenant.getPhoneNum()));
+        tenant.setToken(TenantTokenGenerator.generateToken(tenant.getPhoneNum()));
+        tenant.setPassword(passwordEncoder.encode(tenant.getPhoneNum()));
 
-            tenant.setRole(Role.TENANT);
+        tenant.setRole(Role.TENANT);
 
-            tenant = tenantRepository.save(tenant);
+        tenant = tenantRepository.save(tenant);
 
-            rent.setTenant(tenant);
+        rent.setTenant(tenant);
 
-            rent = rentRepository.save(rent);
+        rent = rentRepository.save(rent);
 
-            return RentConverter.toRentModel(rent, tenant, room);
+        return RentConverter.toRentModel(rent, tenant, room);
     }
 
-    public RentModel updateRent(String rentId, RentModel rentRequest, MultipartFile file, JwtToken token) {
+    public RentModel updateRent(String rentId, RentModel rentRequest,  JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
         // rent
@@ -107,30 +104,26 @@ public class RentService implements IRentService {
         Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
 
         RentValidator.validateRent(rentRequest);
-        Rent newRent;
-        try {
-             newRent = RentConverter.toRentEntity(rentRequest, file);
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to save image" + e.getMessage());
-        }
-            newRent.setCreatedAt(rent.getCreatedAt());
+        Rent newRent = RentConverter.toRentEntity(rentRequest);
+        
+        newRent.setCreatedAt(rent.getCreatedAt());
 
-            // tenant
-            UUID tenantUuid = rent.getTenant().getId();
-            Tenant tenant = tenantRepository.findTenantById(tenantUuid)
-                    .orElseThrow(() -> new NotFoundException("Tenant not found"));
+        // tenant
+        UUID tenantUuid = rent.getTenant().getId();
+        Tenant tenant = tenantRepository.findTenantById(tenantUuid)
+                .orElseThrow(() -> new NotFoundException("Tenant not found"));
 
-            TenantValidator.validateTenant(rentRequest);
-            Tenant newTenant = TenantConverter.toTenantEntity(rentRequest);
-            newTenant.setCreatedAt(tenant.getCreatedAt());
-            newTenant.setId(tenantUuid);
+        TenantValidator.validateTenant(rentRequest);
+        Tenant newTenant = TenantConverter.toTenantEntity(rentRequest);
+        newTenant.setCreatedAt(tenant.getCreatedAt());
+        newTenant.setId(tenantUuid);
 
-            // save to db
-            newTenant = tenantRepository.save(newTenant);
-            newRent.setTenant(newTenant);
-            newRent = rentRepository.save(newRent);
-            RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
-            return RentConverter.toRentModel(newRent, newTenant, room);
+        // save to db
+        newTenant = tenantRepository.save(newTenant);
+        newRent.setTenant(newTenant);
+        newRent = rentRepository.save(newRent);
+        RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
+        return RentConverter.toRentModel(newRent, newTenant, room);
     }
 
     public void deleteRent(String id, JwtToken token) {
@@ -142,6 +135,58 @@ public class RentService implements IRentService {
 
         rent.setDeletedAt(LocalDateTime.now());
         rentRepository.save(rent);
+    }
+
+// contract image management
+    public ContractModel saveContract(String rent_id, MultipartFile file, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
+
+        UUID rentUuid = UUID.fromString(rent_id);
+        Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
+
+        try {
+            rent.setImage_contract(file.getBytes());
+        } catch (Exception e) {
+            throw new BadRequestException("Failed to save image" + e.getMessage());
+        }
+        rent = rentRepository.save(rent);
+        return ContractModel.builder()
+                .rent_id(rent_id)
+                .image_contract(rent.getImage_contract())
+                .build();
+    }
+
+    public ContractModel getContract(String rent_id, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
+
+        UUID rentUuid = UUID.fromString(rent_id);
+        Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
+
+        return ContractModel.builder()
+                .rent_id(rent_id)
+                .image_contract(rent.getImage_contract())
+                .build();
+    }
+
+    public ContractModel updateContract(String rent_id, MultipartFile file, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
+
+        UUID rentUuid = UUID.fromString(rent_id);
+        Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
+
+        try {
+            rent.setImage_contract(file.getBytes());
+        } catch (Exception e) {
+            throw new BadRequestException("Failed to save image" + e.getMessage());
+        }
+        rent = rentRepository.save(rent);
+        return ContractModel.builder()
+                .rent_id(rent_id)
+                .image_contract(rent.getImage_contract())
+                .build();
     }
 
 

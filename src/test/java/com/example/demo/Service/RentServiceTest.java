@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.entity.Rent;
 import com.example.demo.entity.Tenant;
 import com.example.demo.middleware.JwtService;
+import com.example.demo.model.ContractModel;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.Role;
@@ -73,6 +74,7 @@ class RentServiceTest {
     private Tenant tenant;
     private RentModel rentModel;
     private RoomModel roomModel;
+    private ContractModel contractModel;
 
 
     @BeforeEach
@@ -116,10 +118,14 @@ class RentServiceTest {
                 .room(roomModel)
                 .tenant(TenantConverter.toTenantModel(tenant))
                 .room(roomModel)
-                .imageContract(fileContent)
+                // .imageContract(fileContent)
                 .createdAt(rent.getCreatedAt())
                 .updatedAt(rent.getUpdatedAt())
                 .deletedAt(null)
+                .build();
+        contractModel = ContractModel.builder()
+                .rent_id(rent.getRent_id().toString())
+                .image_contract(fileContent)
                 .build();
     }
 
@@ -157,9 +163,9 @@ class RentServiceTest {
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-        when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
+        // when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
 
-        RentModel result = rentService.saveRent(rentModel, multipartFile, token);
+        RentModel result = rentService.saveRent(rentModel, token);
 
         assertNotNull(result);
         verify(rentRepository, times(1)).save(any(Rent.class));
@@ -174,9 +180,9 @@ class RentServiceTest {
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
-        when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
+        // when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
 
-        RentModel result = rentService.updateRent(rentId.toString(), rentModel, multipartFile, token);
+        RentModel result = rentService.updateRent(rentId.toString(), rentModel, token);
 
         assertNotNull(result);
         verify(rentRepository, times(1)).save(any(Rent.class));
@@ -191,6 +197,48 @@ class RentServiceTest {
         rentService.deleteRent(rentId.toString(), token);
 
         verify(rentRepository, times(1)).save(any(Rent.class));
+    }
+
+    @Test
+    void testSaveContract() throws IOException {
+        // UUID rentId = UUID.randomUUID();
+        when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
+        when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
+        when(rentRepository.save(any(Rent.class))).thenReturn(rent);
+        when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
+
+
+        ContractModel result = rentService.saveContract(rent.getRent_id().toString(), multipartFile, token);
+        
+        assertNotNull(result);
+        assertEquals(contractModel, result);
+    }
+
+    @Test
+    void testGetContract() {
+        // UUID rentId = UUID.randomUUID();
+        when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
+        when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
+
+        ContractModel result = rentService.getContract(rent.getRent_id().toString(), token);
+
+        assertNotNull(result);
+        assertEquals(contractModel, result);
+    }
+
+    @Test
+    void testUpdateContract() throws IOException {
+        // UUID rentId = UUID.randomUUID();
+        when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
+        when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
+        when(rentRepository.save(any(Rent.class))).thenReturn(rent);
+
+        when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
+
+        ContractModel result = rentService.updateContract(rent.getRent_id().toString(), multipartFile, token);
+
+        assertNotNull(result);
+        assertEquals(contractModel, result);
     }
 
 }
