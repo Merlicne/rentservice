@@ -53,10 +53,10 @@ public class InvoiceService implements IInvoiceService {
 
         RentModel rentModel = rentService.getRentById(invoiceModel.getRent().getRentId(), token);
         TenantModel tenantModel = rentModel.getTenant();
-        DormModel dormModel = dormService.getDormInfo(token);
-        RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token);
+        DormModel dormModel = dormService.getDormInfo(token).orElseThrow(() -> new NotFoundException("Dorm not found"));
+        RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
         
-        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token);
+        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
         
         double electPerUnit = buildingModel.getElecPrice();
         double waterPerUnit = buildingModel.getWaterPrice();
@@ -88,11 +88,11 @@ public class InvoiceService implements IInvoiceService {
         Invoice invoice = invoiceRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Invoice not found"));
         
         RentModel rentModel = rentService.getRentById(invoice.getRent_id().toString(), token);
-        DormModel dormModel = dormService.getDormInfo(token);
+        DormModel dormModel = dormService.getDormInfo(token).orElseThrow(() -> new NotFoundException("Dorm not found"));
         TenantModel tenantModel = rentModel.getTenant();
-        RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token);
+        RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
         
-        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token);
+        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
         double electPerUnit = buildingModel.getElecPrice();
         double waterPerUnit = buildingModel.getWaterPrice();
         String promptPay = dormModel.getTelephone();

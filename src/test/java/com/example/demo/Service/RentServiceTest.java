@@ -148,8 +148,8 @@ class RentServiceTest {
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findAllRents()).thenReturn(List.of(rent));
         when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
-        when(roomService.getRoom(1, token)).thenReturn(roomModel);
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
+        when(roomService.getRoom(1, token)).thenReturn(Optional.of(roomModel));
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(buildingModel));
         Iterable<RentModel> rents = rentService.getAllRents(token);
 
         assertNotNull(rents);
@@ -162,8 +162,8 @@ class RentServiceTest {
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
         when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
-        when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
+        when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(roomModel));
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(buildingModel));
 
         RentModel result = rentService.getRentById(rentId.toString(), token);
 
@@ -176,10 +176,10 @@ class RentServiceTest {
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
-        when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
+        when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(roomModel));
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
-        when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(roomModel);
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
+        when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(Optional.of(roomModel));
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn((Optional.of(buildingModel)));
         
         RentModel result = rentService.saveRent(rentModel, token);
         
@@ -195,10 +195,10 @@ class RentServiceTest {
         when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
-        when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
+        when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(roomModel));
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
-        when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(roomModel);
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
+        when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(Optional.of(roomModel));
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(buildingModel));
 
         RentModel result = rentService.updateRent(rentId.toString(), rentModel, token);
 

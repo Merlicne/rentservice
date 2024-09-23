@@ -3,6 +3,9 @@ package com.example.demo.webClient.implement;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -24,22 +27,18 @@ public class DormService implements IDormService {
     }
 
     @Override
-    public BuildingModel getBuilding(int id, JwtToken token) {
+    public Optional<BuildingModel> getBuilding(int id, JwtToken token) {
         ResponseBody<BuildingModel> response =  webClient.get()
                 .uri("/building/{id}", id)
                 .header("Authorization", "Bearer " + token.getToken())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<BuildingModel>>() {})
                 .block();   
-
-        if (response.getStatus() != 200) {
-            throw new RuntimeException("Building get failed : " + response.getMessage());
-        }
-        return response.getData();
+        return Optional.of(response.getData());
     }
 
     @Override
-    public DormModel getDormInfo(JwtToken token) {
+    public Optional<DormModel> getDormInfo(JwtToken token) {
         ResponseBody<DormModel> response =  webClient.get()
                 .uri("/dorm")
                 .header("Authorization", "Bearer " + token.getToken())
@@ -47,10 +46,7 @@ public class DormService implements IDormService {
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<DormModel>>() {})
                 .block();
 
-        if (response.getStatus() != 200) {
-            throw new RuntimeException("Dorm get failed : " + response.getMessage());
-        }
-        return response.getData();
+        return Optional.of(response.getData());
     }
 
 

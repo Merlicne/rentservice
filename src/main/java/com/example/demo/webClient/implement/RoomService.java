@@ -1,5 +1,7 @@
 package com.example.demo.webClient.implement;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class RoomService implements IRoomService {
     }
 
     @Override
-    public RoomModel getRoom(int id, JwtToken token) {
+    public Optional<RoomModel> getRoom(int id, JwtToken token) {
         ResponseBody<RoomModel> response =  webClient.get()
                 .uri("/room/{id}", id)
                 .header("Authorization","Bearer "+ token.getToken())
@@ -33,11 +35,11 @@ public class RoomService implements IRoomService {
         if (response.getStatus() != 200) {
             throw new RuntimeException("Room get failed : " + response.getMessage());
         }
-        return response.getData();
+        return Optional.of(response.getData());
     }
 
     @Override
-    public RoomModel updateRoom(int id, RoomModel room, JwtToken token) {
+    public Optional<RoomModel> updateRoom(int id, RoomModel room, JwtToken token) {
         ResponseBody<RoomModel> response =  webClient.put()
                 .uri("/room/{id}", id)
                 .header("Authorization","Bearer "+ token.getToken())
@@ -49,6 +51,6 @@ public class RoomService implements IRoomService {
         if(response.getStatus() != 200 && response.getStatus() != 201) {
             throw new RuntimeException("Room update failed : " + response.getMessage());
         }
-        return response.getData();
+        return Optional.of(response.getData());
     }
 }
