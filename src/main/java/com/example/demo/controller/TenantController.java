@@ -42,6 +42,7 @@ public class TenantController {
 
     @GetMapping("/{id}/rent")
     public ResponseBody<RentModel> getTenantRents(@RequestHeader("Authorization") String token, @PathVariable String id) {
+        token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
         RentModel tenants = rentService.getRentByTenantId(id, jwtToken);
         return new ResponseBody<>(200, "Tenant retrieved successfully", tenants);
