@@ -52,13 +52,11 @@ public class InvoiceService implements IInvoiceService {
 
         InvoiceValidator.validateInvoice(invoiceModel);
 
-        System.out.println("SERVICE : Create invoice" + invoiceModel.getRent().getRentId());
         RentModel rentModel = rentService.getRentById(invoiceModel.getRent().getRentId(), token);
         TenantModel tenantModel = rentModel.getTenant();
-        System.out.println("SERVICE : Create invoice" + invoiceModel.getRent().getRentId());
         DormModel dormModel = dormService.getDormInfo(token).orElseThrow(() -> new NotFoundException("Dorm not found"));
-        RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
         System.out.println("SERVICE : Create invoice" + invoiceModel.getRent().getRentId());
+        RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
         
         BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
         
