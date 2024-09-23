@@ -112,5 +112,7 @@ public class RentController {
         return new ResponseBody<>(HttpStatus.OK.value(),"Contract updated successfully",contractModel);
     }
 
+    
+
 
 }

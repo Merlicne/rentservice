@@ -11,7 +11,7 @@ import com.example.demo.entity.Tenant;
 
 
 @Repository
-public interface TenantRepository extends JpaRepository<Tenant, UUID>{
+public interface TenantRepository extends JpaRepository<Tenant, String>{
 
     // get tenant which not deleted
     @Query("SELECT t FROM Tenant t WHERE t.deletedAt IS NULL")
@@ -19,7 +19,7 @@ public interface TenantRepository extends JpaRepository<Tenant, UUID>{
 
     // get tenant by id which not deleted
     @Query("SELECT t FROM Tenant t WHERE t.id = ?1 AND t.deletedAt IS NULL")
-    public Optional<Tenant> findTenantById(UUID id);
+    public Optional<Tenant> findTenantById(String id);
 
     // get deleted tenant
     @Query("SELECT t FROM Tenant t WHERE t.deletedAt IS NOT NULL")

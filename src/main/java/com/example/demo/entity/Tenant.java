@@ -41,7 +41,7 @@ public class Tenant implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private UUID Id;
+    private String Id;
 
     @Column(name = "firstName")
     private String firstName;

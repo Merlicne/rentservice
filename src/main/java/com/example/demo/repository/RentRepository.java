@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import com.example.demo.entity.Rent;
 
+
 public interface RentRepository extends JpaRepository<Rent, UUID>{
     // get rent which not deleted
     @Query("SELECT r FROM Rent r WHERE r.deletedAt IS NULL")
@@ -21,4 +22,7 @@ public interface RentRepository extends JpaRepository<Rent, UUID>{
     // get deleted rent
     @Query("SELECT r FROM Rent r WHERE r.deletedAt IS NOT NULL")
     public List<Rent> findDeletedRents();
+
+    @Query(value = "SELECT r FROM Rent r WHERE r.tenant_id = ?1", nativeQuery = true)
+    public Optional<Rent> findByTenantId(String tenant_id);
 }

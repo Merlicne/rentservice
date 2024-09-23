@@ -8,13 +8,9 @@ import com.example.demo.model.TenantModel;
 
 public class TenantConverter {
     public static Tenant toTenantEntity(RentModel rentModel) {
-        UUID tenantId = null;
-        if (rentModel.getTenant().getId() != null) {
-            tenantId = UUID.fromString(rentModel.getTenant().getId());
-        }
 
         return Tenant.builder()
-            .Id(tenantId)
+            .Id(rentModel.getTenant().getId())
             .firstName(rentModel.getTenant().getFirstName())
             .lastName(rentModel.getTenant().getLastName())
             .phoneNum(rentModel.getTenant().getPhoneNum())

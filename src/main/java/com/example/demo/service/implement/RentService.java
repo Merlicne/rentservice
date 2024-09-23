@@ -113,7 +113,7 @@ public class RentService implements IRentService {
         newRent.setCreatedAt(rent.getCreatedAt());
 
         // tenant
-        UUID tenantUuid = rent.getTenant().getId();
+        String tenantUuid = rent.getTenant().getId();
         Tenant tenant = tenantRepository.findTenantById(tenantUuid).orElseThrow(() -> new NotFoundException("Tenant not found"));
 
         Tenant newTenant = TenantConverter.toTenantEntity(rentRequest);
@@ -195,6 +195,16 @@ public class RentService implements IRentService {
         rent = rentRepository.save(rent);
         
         return RentConverter.toContractModel(rent);
+    }
+
+    public RentModel getRentByTenantId(String tenant_id, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
+
+        Tenant tenant = tenantRepository.findById(tenant_id).orElseThrow(() -> new NotFoundException("Tenant not found"));
+        Rent rent = rentRepository.findByTenantId(tenant.getId()).orElseThrow(() -> new NotFoundException("Rent not found"));
+        RoomModel room = roomService.getRoom(rent.getRoom_id(), token);
+        return RentConverter.toRentModel(rent, tenant, room);
     }
 
 
