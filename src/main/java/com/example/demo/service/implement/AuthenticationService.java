@@ -28,7 +28,7 @@ public class AuthenticationService implements IAuthenticationService {
     @Transactional
     public JwtToken login(LoginRequest loginRequest) {
         
-        Tenant tenant = tenantRepository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new NotFoundException("Tenant not found"));
+        Tenant tenant = tenantRepository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new NotFoundException("Tenant not found .."));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(),
