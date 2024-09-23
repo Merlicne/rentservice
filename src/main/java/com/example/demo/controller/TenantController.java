@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class TenantController {
     private final IAuthenticationService authenticationService;
 
-    private final ITenantService tenantService;
     private final IRentService rentService;
 
     @GetMapping("/auth/find/{token}")
@@ -39,13 +38,6 @@ public class TenantController {
     public ResponseBody<JwtToken> login(LoginRequest loginRequest) {
         JwtToken token = authenticationService.login(loginRequest);
         return new ResponseBody<>(200, "Login successful", token);
-    }
-
-    @GetMapping
-    public ResponseBody<List<TenantModel>> getAllTenants(@RequestHeader("Authorization") String token) {
-        JwtToken jwtToken = JwtToken.builder().token(token).build();
-        List<TenantModel> tenants = tenantService.getAllTenants(jwtToken);
-        return new ResponseBody<>(200, "Tenant retrieved successfully", tenants);
     }
 
     @GetMapping("/{id}/rent")
