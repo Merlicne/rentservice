@@ -151,7 +151,7 @@ public class RentService implements IRentService {
 
         UUID uuid = UUID.fromString(id);
         Rent rent = rentRepository.findRentById(uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
-
+        
         rent.setDeletedAt(LocalDateTime.now());
         rentRepository.save(rent);
     }
