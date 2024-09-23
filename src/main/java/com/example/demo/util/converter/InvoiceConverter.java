@@ -48,7 +48,7 @@ public class InvoiceConverter {
                                 .roomPrice(invoiceDetail.getRoomPrice())
                                 .roomTotal(invoiceDetail.getRoomTotal())
                                 .total(invoiceDetail.getTotal())
-                                .qrcode(invoiceEntity.getQrcode())
+                                .qrcode(invoiceDetail.getQrcode())
                                 .monthly(monthly)
                                 .dueDate(dueDate)
                                 .recordDate(recordDate)
