@@ -57,6 +57,7 @@ public class InvoiceConverter {
                                                 .rentId(rentModel.getRentId())
                                                 .room(RoomModel.builder()
                                                                 .roomID(roomModel.getRoomID())
+                                                                .buildingID(roomModel.getBuildingID())
                                                                 .roomNo(roomModel.getRoomNo())
                                                                 .build())
                                                 .tenant(TenantModel.builder()
