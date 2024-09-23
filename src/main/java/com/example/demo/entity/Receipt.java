@@ -1,9 +1,11 @@
 package com.example.demo.entity;
 
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
@@ -41,8 +43,9 @@ public class Receipt {
     // @Column(name = "uri")
     // private String uri;
 
-    @Lob
-    @Column(name = "image_receipt", columnDefinition="bytea")
+    // @Lob
+    @JdbcTypeCode(Types.VARBINARY)
+    @Column(name = "image_receipt")
     private byte[] image_receipt;
 
     @CreationTimestamp
