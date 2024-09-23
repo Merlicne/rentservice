@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class TenantController {
     private final IAuthenticationService authenticationService;
 
-    @GetMapping("/{token}")
+    @GetMapping("/find/{token}")
     public ResponseBody<String> isTenantValid(@PathVariable String tenantToken) {
         authenticationService.isTenantValid(tenantToken);
         return new ResponseBody<>(200, "Tenant is valid", "Tenant is valid");

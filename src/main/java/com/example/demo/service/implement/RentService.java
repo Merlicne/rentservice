@@ -44,7 +44,7 @@ public class RentService implements IRentService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
-    public Iterable<RentModel> getAllRents(JwtToken token) {
+    public List<RentModel> getAllRents(JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
 

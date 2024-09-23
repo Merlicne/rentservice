@@ -112,7 +112,7 @@ public class InvoiceService implements IInvoiceService {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
 
-        Iterable<Invoice> invoices = invoiceRepository.findByRentId(UUID.fromString(rent_id));
+        List<Invoice> invoices = invoiceRepository.findByRentId(UUID.fromString(rent_id));
         List<InvoiceModel> invoiceModels = new ArrayList<>();
         for (Invoice invoice : invoices) {
             invoiceModels.add(getInvoiceById(invoice.getId().toString(), token));
@@ -122,7 +122,7 @@ public class InvoiceService implements IInvoiceService {
 
     @Override
     public Iterable<InvoiceModel> getAllInvoices(JwtToken token) {
-        Iterable<Invoice> invoices = invoiceRepository.findAllInvoices();
+        List<Invoice> invoices = invoiceRepository.findAllInvoices();
         List<InvoiceModel> invoiceModels = new ArrayList<>();
         for (Invoice invoice : invoices) {
             invoiceModels.add(getInvoiceById(invoice.getId().toString(), token));
