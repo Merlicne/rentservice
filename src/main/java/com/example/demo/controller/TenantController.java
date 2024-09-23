@@ -47,4 +47,11 @@ public class TenantController {
         return new ResponseBody<>(200, "Tenant retrieved successfully", tenants);
     }
 
+    // @GetMapping("/{tenant_id}")
+    // public ResponseBody<TenantModel> getTenantById(@RequestHeader("Authorization") String token, @PathVariable String tenant_id) {
+    //     JwtToken jwtToken = JwtToken.builder().token(token).build();
+    //     TenantModel tenant = rentService.getTenantById(tenant_id, jwtToken);
+    //     return new ResponseBody<>(200, "Tenant retrieved successfully", tenant);
+    // }
+
 }

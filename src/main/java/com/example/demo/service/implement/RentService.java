@@ -16,6 +16,7 @@ import com.example.demo.entity.Tenant;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.middleware.JwtService;
+import com.example.demo.model.BuildingModel;
 import com.example.demo.model.ContractModel;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
@@ -30,6 +31,7 @@ import com.example.demo.util.converter.TenantConverter;
 import com.example.demo.util.validator.RentValidator;
 import com.example.demo.util.validator.RoleValidation;
 import com.example.demo.util.validator.TenantValidator;
+import com.example.demo.webClient.IDormService;
 import com.example.demo.webClient.IRoomService;
 
 import com.example.demo.enumurated.RoomStatus;
@@ -44,6 +46,7 @@ public class RentService implements IRentService {
     private final TenantRepository tenantRepository;
 
     private final IRoomService roomService;
+    private final IDormService dormService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
@@ -58,7 +61,8 @@ public class RentService implements IRentService {
             Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId())
                     .orElseThrow(() -> new NotFoundException("Tenant not found"));
             RoomModel room = roomService.getRoom(rent.getRoom_id(), token);
-            rentModels.add(RentConverter.toRentModel(rent, tenant, room));
+            BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token);
+            rentModels.add(RentConverter.toRentModel(rent, tenant, room, building));
         }
         return rentModels;
     }
@@ -72,7 +76,8 @@ public class RentService implements IRentService {
         Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId())
                 .orElseThrow(() -> new NotFoundException("Tenant not found"));
         RoomModel room = roomService.getRoom(rent.getRoom_id(), token);
-        return RentConverter.toRentModel(rent, tenant, room);
+        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token);
+        return RentConverter.toRentModel(rent, tenant, room, building);
     }
 
     @Transactional
@@ -97,10 +102,13 @@ public class RentService implements IRentService {
         TenantValidator.validateTenant(tenant);
         Tenant tenant_repo = tenantRepository.save(tenant);
         rent.setTenant(tenant_repo);
+
         rent = rentRepository.save(rent);
         room.setRoomStatus(RoomStatus.RENTED);
         roomService.updateRoom(room.getRoomID(),room, token);
-        RentModel rentModel =  RentConverter.toRentModel(rent, tenant_repo, room);
+
+        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token);
+        RentModel rentModel =  RentConverter.toRentModel(rent, tenant_repo, room, building);
         
         return rentModel;
     }
@@ -141,7 +149,8 @@ public class RentService implements IRentService {
             roomService.updateRoom(room.getRoomID(), room, token);
         }
         RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
-        return RentConverter.toRentModel(newRent, newTenant, room);
+        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token);
+        return RentConverter.toRentModel(newRent, newTenant, room, building);
     }
 
     @Transactional
@@ -215,7 +224,19 @@ public class RentService implements IRentService {
         Tenant tenant = tenantRepository.findById(tenant_id).orElseThrow(() -> new NotFoundException("Tenant not found"));
         Rent rent = rentRepository.findByTenantId(tenant.getId()).orElseThrow(() -> new NotFoundException("Rent not found"));
         RoomModel room = roomService.getRoom(rent.getRoom_id(), token);
-        return RentConverter.toRentModel(rent, tenant, room);
+        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token);
+        return RentConverter.toRentModel(rent, tenant, room, building);
+    }
+
+    public RentModel getRentByRoomId(int room_id, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
+
+        Rent rent = rentRepository.findByRoomId(room_id).orElseThrow(() -> new NotFoundException("Rent not found"));
+        Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId()).orElseThrow(() -> new NotFoundException("Tenant not found"));
+        RoomModel room = roomService.getRoom(rent.getRoom_id(), token);
+        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token);
+        return RentConverter.toRentModel(rent, tenant, room, building);
     }
 
 

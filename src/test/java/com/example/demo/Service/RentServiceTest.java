@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.entity.Rent;
 import com.example.demo.entity.Tenant;
 import com.example.demo.middleware.JwtService;
+import com.example.demo.model.BuildingModel;
 import com.example.demo.model.ContractModel;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
@@ -38,6 +39,7 @@ import com.example.demo.repository.RentRepository;
 import com.example.demo.repository.TenantRepository;
 import com.example.demo.service.implement.RentService;
 import com.example.demo.util.converter.TenantConverter;
+import com.example.demo.webClient.IDormService;
 import com.example.demo.webClient.IRoomService;
 import com.example.demo.enumurated.RoomStatus;
 
@@ -55,6 +57,9 @@ class RentServiceTest {
 
     @Mock
     private IRoomService roomService;
+
+    @Mock
+    private IDormService dormService;
 
     @Mock
     private JwtService jwtService;
@@ -76,6 +81,7 @@ class RentServiceTest {
     private RentModel rentModel;
     private RoomModel roomModel;
     private ContractModel contractModel;
+    private BuildingModel buildingModel;
     private byte[] fileContent;
 
     @BeforeEach
@@ -95,6 +101,10 @@ class RentServiceTest {
                 .phoneNum("1234567890")
                 .password("password")
                 .build();
+        buildingModel = BuildingModel.builder()
+                .buildingID(1)
+                .buildingName("Building")
+                .build();
         rent = Rent.builder()
                 .rent_id(UUID.randomUUID())
                 .room_id(1)
@@ -111,6 +121,7 @@ class RentServiceTest {
                 .roomID(1)
                 .roomNo("101")
                 .roomStatus(RoomStatus.NOT_RENTED)
+                .building(buildingModel)
                 .build();
 
         rentModel = RentModel.builder()
@@ -138,7 +149,7 @@ class RentServiceTest {
         when(rentRepository.findAllRents()).thenReturn(List.of(rent));
         when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(roomService.getRoom(1, token)).thenReturn(roomModel);
-
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
         Iterable<RentModel> rents = rentService.getAllRents(token);
 
         assertNotNull(rents);
@@ -152,6 +163,7 @@ class RentServiceTest {
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
         when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
 
         RentModel result = rentService.getRentById(rentId.toString(), token);
 
@@ -167,6 +179,7 @@ class RentServiceTest {
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
         when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(roomModel);
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
         
         RentModel result = rentService.saveRent(rentModel, token);
         
@@ -184,6 +197,8 @@ class RentServiceTest {
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
+        when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(roomModel);
+        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(buildingModel);
 
         RentModel result = rentService.updateRent(rentId.toString(), rentModel, token);
 

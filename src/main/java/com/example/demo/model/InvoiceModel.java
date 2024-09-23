@@ -10,6 +10,7 @@ import lombok.Data;
 @Builder
 public class InvoiceModel {
     private String invoiceId;  
+    private InvoiceStatus status;
     
     private double waterUnit;  // input
     private double waterPrice;

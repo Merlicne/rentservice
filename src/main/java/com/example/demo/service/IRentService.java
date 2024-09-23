@@ -37,4 +37,7 @@ public interface IRentService {
 
     @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
     public RentModel getRentByTenantId(String tenant_id, JwtToken token);
+
+    @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
+    public RentModel getRentByRoomId(int room_id, JwtToken token);
 }

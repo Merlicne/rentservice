@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.example.demo.model.InvoiceStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
@@ -35,6 +36,9 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
+
+    @Column(name = "status")
+    private InvoiceStatus status;
 
     // @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     // @JoinColumn(name = "rent_id")

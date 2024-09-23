@@ -16,6 +16,7 @@ import com.example.demo.model.BuildingModel;
 import com.example.demo.model.DormModel;
 import com.example.demo.model.InvoiceDetail;
 import com.example.demo.model.InvoiceModel;
+import com.example.demo.model.InvoiceStatus;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.Role;
@@ -55,7 +56,7 @@ public class InvoiceService implements IInvoiceService {
         DormModel dormModel = dormService.getDormInfo(token);
         RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token);
         
-        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuildingID(), token);
+        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token);
         
         double electPerUnit = buildingModel.getElecPrice();
         double waterPerUnit = buildingModel.getWaterPrice();
@@ -71,7 +72,7 @@ public class InvoiceService implements IInvoiceService {
 
         
         
-
+        invoiceModel.setStatus(InvoiceStatus.UNPAID);
         Invoice invoice = InvoiceConverter.toEntity(invoiceModel, rentModel);
         Invoice invoiceEntity = invoiceRepository.save(invoice);
 
@@ -91,7 +92,7 @@ public class InvoiceService implements IInvoiceService {
         TenantModel tenantModel = rentModel.getTenant();
         RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token);
         
-        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuildingID(), token);
+        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token);
         double electPerUnit = buildingModel.getElecPrice();
         double waterPerUnit = buildingModel.getWaterPrice();
         String promptPay = dormModel.getTelephone();

@@ -15,14 +15,14 @@ public interface ITenantService {
     public List<TenantModel> getAllTenants(JwtToken jwtToken);
 
     @Retryable(retryFor =  { Exception.class }, maxAttempts = 5)
-    public TenantModel getTenantById(int id, JwtToken jwtToken);
+    public TenantModel getTenantById(String id, JwtToken jwtToken);
 
-    @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
-    public RentModel saveTenant(RentModel rent, JwtToken jwtToken);
+    // @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
+    // public TenantModel saveTenant(RentModel rent, JwtToken jwtToken);
 
-    @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
-    public TenantModel updateTenant(int id, TenantModel tenant, JwtToken jwtToken);
+    // @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
+    // public TenantModel updateTenant(String id, TenantModel tenant, JwtToken jwtToken);
 
-    @Retryable(retryFor =  { Exception.class }, maxAttempts = 5)
-    public void deleteTenant(int id, JwtToken jwtToken);
+    // @Retryable(retryFor =  { Exception.class }, maxAttempts = 5)
+    // public void deleteTenant(String id, JwtToken jwtToken);
 }

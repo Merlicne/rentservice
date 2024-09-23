@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.entity.Invoice;
 import com.example.demo.entity.Receipt;
+import com.example.demo.model.InvoiceStatus;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.ReceiptModel;
 import com.example.demo.model.Role;
@@ -56,7 +58,8 @@ public class ReceiptService implements IReceiptService {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
         // check if they exist
-        invoiceRepository.findById(UUID.fromString(invoiceID)).orElseThrow(() -> new NotFoundException("Invoice not found"));
+        Invoice invoice = invoiceRepository.findById(UUID.fromString(invoiceID)).orElseThrow(() -> new NotFoundException("Invoice not found"));
+
 
         ReceiptModel receiptModel = new ReceiptModel();
         receiptModel.setInvoiceId(invoiceID);
@@ -64,6 +67,7 @@ public class ReceiptService implements IReceiptService {
         try {
             Receipt receipt = ReceiptConverter.toEntity(receiptModel, file);
             receipt = receiptRepository.save(receipt);
+            invoice.setStatus(InvoiceStatus.ON_PROCESSED);
             return ReceiptConverter.toModel(receipt); 
         } catch (IOException e) {
             throw new BadRequestException("Failed to save image");

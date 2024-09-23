@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Rent;
 import com.example.demo.entity.Tenant;
+import com.example.demo.model.BuildingModel;
 import com.example.demo.model.ContractModel;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.RoomModel;
@@ -77,7 +78,7 @@ public class RentConverter {
 
 
 
-    public static RentModel toRentModel(Rent rent, Tenant tenant, RoomModel room) {
+    public static RentModel toRentModel(Rent rent, Tenant tenant, RoomModel room, BuildingModel building) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate starDate = rent.getStart_date();
         String startDate_format = starDate.format(formatter);
@@ -99,7 +100,10 @@ public class RentConverter {
                 .roomID(room.getRoomID())
                 .roomNo(room.getRoomNo())
                 .roomPrice(room.getRoomPrice())
-                .buildingID(room.getBuildingID())
+                .building(BuildingModel.builder()
+                    .buildingID(building.getBuildingID())
+                    .buildingName(building.getBuildingName())
+                    .build())
                 .build())
             .tenant(TenantModel.builder()
                 .id(tenant.getId())
