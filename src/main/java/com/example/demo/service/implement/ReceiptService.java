@@ -20,11 +20,14 @@ import com.example.demo.middleware.JwtService;
 import java.util.UUID;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ReceiptService implements IReceiptService {
     private final ReceiptRepository receiptRepository;
     private final InvoiceRepository invoiceRepository;
@@ -39,8 +42,16 @@ public class ReceiptService implements IReceiptService {
         return ReceiptConverter.toModel(receipt);
     }
 
-
-    @Transactional
+    public List<ReceiptModel> getAllReceipts(JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
+        List<ReceiptModel> receipts = new ArrayList<>();
+        for (Receipt r : receiptRepository.findAll()) {
+            receipts.add(ReceiptConverter.toModel(r));
+        }
+        return receipts;
+    }
+    
     public ReceiptModel createReceipt(String invoiceID, MultipartFile file, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);

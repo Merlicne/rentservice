@@ -17,7 +17,7 @@ import com.example.demo.model.response.ResponseBody;
 import com.example.demo.service.IReceiptService;
 
 import org.springframework.http.HttpStatus;
-
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -46,6 +46,15 @@ public class ReceiptController {
 
         ReceiptModel response = receiptService.getReceiptById(id, jwtToken);
         return new ResponseBody<>(HttpStatus.OK.value(), "Receipt retrieved successfully", response);
+    }
+
+    @GetMapping("/receipts")
+    public ResponseBody<List<ReceiptModel>> getAllReceipts(@RequestHeader("Authorization") String token) {
+        token = token.substring(7); 
+        JwtToken jwtToken = JwtToken.builder().token(token).build();
+
+        List<ReceiptModel> response = receiptService.getAllReceipts(jwtToken);
+        return new ResponseBody<>(HttpStatus.OK.value(), "Receipts retrieved successfully", response);
     }
 
     @PutMapping("/receipt/{id}")
