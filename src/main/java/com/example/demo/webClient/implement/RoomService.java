@@ -32,9 +32,7 @@ public class RoomService implements IRoomService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<RoomModel>>() {})
                 .block();   
-        if (response.getStatus() != 200) {
-            throw new RuntimeException("Room get failed : " + response.getMessage());
-        }
+
         return Optional.of(response.getData());
     }
 
@@ -48,9 +46,6 @@ public class RoomService implements IRoomService {
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<RoomModel>>() {})
                 .block();
 
-        if(response.getStatus() != 200 && response.getStatus() != 201) {
-            throw new RuntimeException("Room update failed : " + response.getMessage());
-        }
         return Optional.of(response.getData());
     }
 }

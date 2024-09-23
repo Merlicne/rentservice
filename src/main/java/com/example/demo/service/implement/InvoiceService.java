@@ -63,9 +63,10 @@ public class InvoiceService implements IInvoiceService {
         double waterPerUnit = buildingModel.getWaterPrice();
         String promptPay = dormModel.getTelephone();
         int basePrice = roomModel.getRoomPrice();
-
+        System.out.println("SERVICE : Create invoice" + invoiceModel.getRent().getRentId());
+        
         InvoiceDetail invoiceDetail = new InvoiceDetail(invoiceModel.getWaterUnit(), 
-                                                        waterPerUnit, 
+        waterPerUnit, 
                                                         invoiceModel.getElectUnit(), 
                                                         electPerUnit, 
                                                         basePrice,
@@ -76,6 +77,7 @@ public class InvoiceService implements IInvoiceService {
         invoiceModel.setStatus(InvoiceStatus.UNPAID);
         Invoice invoice = InvoiceConverter.toEntity(invoiceModel, rentModel);
         Invoice invoiceEntity = invoiceRepository.save(invoice);
+        System.out.println("SERVICE : Create invoice" + invoiceModel.getRent().getRentId());
 
         return InvoiceConverter.toModel(invoiceEntity, invoiceDetail, dormModel, rentModel, tenantModel, roomModel);
     }
