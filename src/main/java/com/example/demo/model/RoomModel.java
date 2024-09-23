@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.example.demo.enumurated.RoomStatus;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -16,6 +18,7 @@ public class RoomModel {
     private int buildingID;
     private String roomNo;
     private int roomPrice;
+    private RoomStatus roomStatus;
     private LocalDateTime createdAt;
     private LocalDateTime deletedAt;
     private LocalDateTime updatedAt;

@@ -31,6 +31,10 @@ public class DormService implements IDormService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<BuildingModel>>() {})
                 .block();   
+
+        if (response.getStatus() != 200) {
+            throw new RuntimeException("Building get failed : " + response.getMessage());
+        }
         return response.getData();
     }
 
@@ -42,6 +46,10 @@ public class DormService implements IDormService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<DormModel>>() {})
                 .block();
+
+        if (response.getStatus() != 200) {
+            throw new RuntimeException("Dorm get failed : " + response.getMessage());
+        }
         return response.getData();
     }
 

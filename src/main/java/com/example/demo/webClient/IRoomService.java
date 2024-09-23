@@ -6,6 +6,9 @@ import com.example.demo.model.JwtToken;
 import com.example.demo.model.RoomModel;
 
 public interface IRoomService {
-    @Retryable(value = { Exception.class }, maxAttempts = 5)
+    @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
     public RoomModel getRoom(int id, JwtToken token);
+
+    @Retryable(retryFor = { Exception.class }, maxAttempts = 5)
+    public RoomModel updateRoom(int id, RoomModel room, JwtToken token);
 }
