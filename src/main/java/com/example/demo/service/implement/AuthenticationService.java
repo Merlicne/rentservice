@@ -29,13 +29,11 @@ public class AuthenticationService implements IAuthenticationService {
     public JwtToken login(LoginRequest loginRequest) {
         
         Tenant tenant = tenantRepository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new NotFoundException("Tenant not found"));
-        
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(),
                     loginRequest.getPassword()
                 )
-      
         );  
 
         Map<String, Object> claims = new HashMap<>();

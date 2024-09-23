@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.example.demo.exception.NotFoundException;
-// import com.example.demo.repository.AdminRepository;
 import com.example.demo.repository.TenantRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ public class ApplicationConfiguration {
     @Bean
     UserDetailsService userDetailsService() {
         return username -> tenantRepository.findByUsername(username)
-                                        .orElseThrow(() -> new NotFoundException("User not found"));
+                                                        .orElseThrow(() -> new NotFoundException("User not found on Authentication"));
     }
 
     @Bean
