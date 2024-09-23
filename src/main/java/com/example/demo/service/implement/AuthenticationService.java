@@ -27,8 +27,10 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Transactional
     public JwtToken login(LoginRequest loginRequest) {
+        System.out.println("Username in loginRequest: " + loginRequest.getUsername());
         
-        Tenant tenant = tenantRepository.findByUsername(loginRequest.getUsername()).orElseThrow(() -> new NotFoundException("Tenant not found .."));
+        Tenant tenant = tenantRepository.findByUsername(loginRequest.getUsername())
+                                            .orElseThrow(() -> new NotFoundException("Tenant not found .."));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                     loginRequest.getUsername(),
@@ -50,8 +52,10 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public void isTenantValid(String tenantToken) {
+        System.out.println("Username in isTenantValid: " + tenantToken);
+
         tenantRepository.findByUsername(tenantToken)
-                        .orElseThrow(() -> new NotFoundException("Tenant not found"));
+                            .orElseThrow(() -> new NotFoundException("Tenant not found"));
     }
 
 }
