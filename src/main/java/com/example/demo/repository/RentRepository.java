@@ -23,9 +23,9 @@ public interface RentRepository extends JpaRepository<Rent, UUID>{
     @Query("SELECT r FROM Rent r WHERE r.deletedAt IS NOT NULL")
     public List<Rent> findDeletedRents();
 
-    @Query(value = "SELECT r FROM Rent r WHERE r.tenant_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Rent r WHERE r.tenant_id = ?1", nativeQuery = true)
     public Optional<Rent> findByTenantId(String tenant_id);
 
-    @Query(value = "SELECT r FROM Rent r WHERE r.room_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Rent r WHERE r.room_id = ?1", nativeQuery = true)
     public Optional<Rent> findByRoomId(int room_id);
 }
