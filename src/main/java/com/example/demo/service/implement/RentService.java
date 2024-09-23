@@ -113,7 +113,6 @@ public class RentService implements IRentService {
     public RentModel updateRent(String rentId, RentModel rentRequest,  JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
-        // rent
         UUID rentUuid = UUID.fromString(rentId);
         Rent rent = rentRepository.findRentById(rentUuid).orElseThrow(() -> new NotFoundException("Rent not found"));
 
@@ -122,7 +121,6 @@ public class RentService implements IRentService {
         
         newRent.setCreatedAt(rent.getCreatedAt());
 
-        // tenant
         String tenantUuid = rent.getTenant().getId();
         Tenant tenant = tenantRepository.findTenantById(tenantUuid).orElseThrow(() -> new NotFoundException("Tenant not found"));
 
@@ -140,7 +138,7 @@ public class RentService implements IRentService {
         newRent.setTenant(newTenant);
         newRent = rentRepository.save(newRent);
         if (newRent.getDateOut() != null && newRent.getDateOut().equals(rent.getDateOut())) {
-            RoomModel room = roomService.getRoom(newRent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
+            RoomModel room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
             room.setRoomStatus(RoomStatus.NOT_RENTED);
             roomService.updateRoom(room.getRoomID(), room, token);
         }
