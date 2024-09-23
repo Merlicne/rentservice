@@ -205,8 +205,12 @@ class RentServiceTest {
     @Test
     void testDeleteRent() {
         UUID rentId = UUID.randomUUID();
+        roomModel.setRoomStatus(RoomStatus.RENTED);
+        rent.setDateOut(null);
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
+        when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(roomModel));
+        when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(Optional.of(roomModel));
 
         rentService.deleteRent(rentId.toString(), token);
 

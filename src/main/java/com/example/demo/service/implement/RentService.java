@@ -151,11 +151,15 @@ public class RentService implements IRentService {
     @Transactional
     public void deleteRent(String id, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
+        String username = jwtService.extractUsername(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
+        System.out.println("delete rent by "+ username);
 
         UUID uuid = UUID.fromString(id);
         Rent rent = rentRepository.findRentById(uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
         RoomModel room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
+        System.out.println("ROOM: "+room);
+        System.out.println("RENT: "+rent);
         if (room.getRoomStatus().equals(RoomStatus.RENTED) && rent.getDateOut() == null) {
             room.setRoomStatus(RoomStatus.NOT_RENTED);
             roomService.updateRoom(room.getRoomID(), room, token);
