@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -25,10 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class ReceiptController {
     private final IReceiptService receiptService;
 
-    @PostMapping("/receipt")
+    @PostMapping("/invoice/{invoice_id}/receipt")
     public ResponseBody<ReceiptModel>  createReceipt(@RequestHeader("Authorization") String token, 
                                                     @RequestParam("image") MultipartFile file, 
-                                                    @RequestParam("invoice_id") String invoice_id) {
+                                                    @PathVariable("invoice_id") String invoice_id) {
                                                         
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
