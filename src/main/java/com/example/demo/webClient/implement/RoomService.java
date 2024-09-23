@@ -14,7 +14,6 @@ import com.example.demo.model.RoomModel;
 import com.example.demo.model.response.ResponseBody;
 import com.example.demo.webClient.IRoomService;
 
-// import lombok.RequiredArgsConstructor;
 
 @Service
 public class RoomService implements IRoomService {
@@ -33,6 +32,11 @@ public class RoomService implements IRoomService {
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<RoomModel>>() {})
                 .block();   
 
+        
+        if (response.getStatus() < 200 || response.getStatus() >= 300) {
+            throw new RuntimeException("Error: " + response.getMessage());
+        }
+    
         return Optional.of(response.getData());
     }
 
@@ -45,6 +49,11 @@ public class RoomService implements IRoomService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<RoomModel>>() {})
                 .block();
+                
+                
+        if (response.getStatus() < 200 || response.getStatus() >= 300) {
+            throw new RuntimeException("Error: " + response.getMessage());
+        }
 
         return Optional.of(response.getData());
     }

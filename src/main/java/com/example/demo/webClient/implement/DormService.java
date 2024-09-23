@@ -12,7 +12,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import com.example.demo.model.BuildingModel;
 import com.example.demo.model.DormModel;
 import com.example.demo.model.JwtToken;
-import com.example.demo.model.RoomModel;
 import com.example.demo.model.response.ResponseBody;
 import com.example.demo.webClient.IDormService;
 
@@ -34,6 +33,11 @@ public class DormService implements IDormService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<BuildingModel>>() {})
                 .block();   
+
+        if (response.getStatus() < 200 || response.getStatus() >= 300) {
+            throw new RuntimeException("Error: " + response.getMessage());
+        }
+        
         return Optional.of(response.getData());
     }
 
@@ -45,7 +49,10 @@ public class DormService implements IDormService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ResponseBody<DormModel>>() {})
                 .block();
-
+        
+        if (response.getStatus() < 200 || response.getStatus() >= 300) {
+            throw new RuntimeException("Error: " + response.getMessage());
+        }
         return Optional.of(response.getData());
     }
 
