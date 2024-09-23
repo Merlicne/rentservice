@@ -40,7 +40,7 @@ public class ReceiptController {
 
     @GetMapping("/receipt/{id}")
     public ResponseBody<ReceiptModel> getReceiptById(@RequestHeader("Authorization") String token, 
-                                                    @RequestParam("id") String id) {
+                                                    @PathVariable("id") String id) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
@@ -48,7 +48,7 @@ public class ReceiptController {
         return new ResponseBody<>(HttpStatus.OK.value(), "Receipt retrieved successfully", response);
     }
 
-    @GetMapping("/receipts")
+    @GetMapping("/receipt")
     public ResponseBody<List<ReceiptModel>> getAllReceipts(@RequestHeader("Authorization") String token) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
@@ -60,7 +60,7 @@ public class ReceiptController {
     @PutMapping("/receipt/{id}")
     public ResponseBody<ReceiptModel> updateReceipt(@RequestHeader("Authorization") String token, 
                                                     @RequestParam("image") MultipartFile file, 
-                                                    @RequestParam("id") String id) {
+                                                    @PathVariable("id") String id) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
@@ -70,7 +70,7 @@ public class ReceiptController {
 
     @DeleteMapping("/receipt/delete/{id}")
     public ResponseBody<String> deleteReceipt(@RequestHeader("Authorization") String token, 
-                                                @RequestParam("id") String id) {
+                                                @PathVariable("id") String id) {
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
 
