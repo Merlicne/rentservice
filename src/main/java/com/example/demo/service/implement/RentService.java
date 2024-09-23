@@ -32,6 +32,8 @@ import com.example.demo.util.validator.RoleValidation;
 import com.example.demo.util.validator.TenantValidator;
 import com.example.demo.webClient.IRoomService;
 
+import com.example.demo.enumurated.RoomStatus;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -83,6 +85,9 @@ public class RentService implements IRentService {
         Rent rent = RentConverter.toRentEntity(rentRequest);
         
         RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
+        if(room.getRoomStatus().equals(RoomStatus.RENTED)) {
+            throw new BadRequestException("Room is already rented");
+        }
         
         // save tenant to repository
         Tenant tenant = TenantConverter.toTenantEntity(rentRequest);
@@ -91,9 +96,10 @@ public class RentService implements IRentService {
         tenant.setRole(Role.TENANT);
         TenantValidator.validateTenant(tenant);
         Tenant tenant_repo = tenantRepository.save(tenant);
-        
         rent.setTenant(tenant_repo);
         rent = rentRepository.save(rent);
+        room.setRoomStatus(RoomStatus.RENTED);
+        roomService.updateRoom(room.getRoomID(),room, token);
         RentModel rentModel =  RentConverter.toRentModel(rent, tenant_repo, room);
         
         return rentModel;
@@ -129,6 +135,11 @@ public class RentService implements IRentService {
         newTenant = tenantRepository.save(newTenant);
         newRent.setTenant(newTenant);
         newRent = rentRepository.save(newRent);
+        if (newRent.getDateOut() != null && newRent.getDateOut().equals(rent.getDateOut())) {
+            RoomModel room = roomService.getRoom(newRent.getRoom_id(), token);
+            room.setRoomStatus(RoomStatus.NOT_RENTED);
+            roomService.updateRoom(room.getRoomID(), room, token);
+        }
         RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token);
         return RentConverter.toRentModel(newRent, newTenant, room);
     }

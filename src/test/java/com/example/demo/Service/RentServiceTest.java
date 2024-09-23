@@ -39,6 +39,7 @@ import com.example.demo.repository.TenantRepository;
 import com.example.demo.service.implement.RentService;
 import com.example.demo.util.converter.TenantConverter;
 import com.example.demo.webClient.IRoomService;
+import com.example.demo.enumurated.RoomStatus;
 
 
 
@@ -109,6 +110,7 @@ class RentServiceTest {
         roomModel = RoomModel.builder()
                 .roomID(1)
                 .roomNo("101")
+                .roomStatus(RoomStatus.NOT_RENTED)
                 .build();
 
         rentModel = RentModel.builder()
@@ -164,7 +166,7 @@ class RentServiceTest {
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
-        // when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
+        when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(roomModel);
         
         RentModel result = rentService.saveRent(rentModel, token);
         
@@ -173,7 +175,7 @@ class RentServiceTest {
     }
     
     @Test
-    void testUpdateRent() throws IOException {
+    void testUpdateRent(){
         UUID rentId = UUID.randomUUID();
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
@@ -182,7 +184,6 @@ class RentServiceTest {
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
-        // when(multipartFile.getBytes()).thenReturn(new byte[] { 1, 2, 3, 4, 5 });
 
         RentModel result = rentService.updateRent(rentId.toString(), rentModel, token);
 
