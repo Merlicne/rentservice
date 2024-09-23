@@ -16,7 +16,7 @@ import com.example.demo.enumurated.RoomStatus;
 public class RoomModel {
     private int roomID ;
     // private int buildingID;
-    private BuildingModel building;
+    private int buildingID;
     private String roomNo;
     private int roomPrice;
     private RoomStatus roomStatus;

@@ -121,7 +121,7 @@ class RentServiceTest {
                 .roomID(1)
                 .roomNo("101")
                 .roomStatus(RoomStatus.NOT_RENTED)
-                .building(buildingModel)
+                .buildingID(buildingModel.getBuildingID())
                 .build();
 
         rentModel = RentModel.builder()
@@ -149,7 +149,6 @@ class RentServiceTest {
         when(rentRepository.findAllRents()).thenReturn(List.of(rent));
         when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(roomService.getRoom(1, token)).thenReturn(Optional.of(roomModel));
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(buildingModel));
         Iterable<RentModel> rents = rentService.getAllRents(token);
 
         assertNotNull(rents);
@@ -163,7 +162,6 @@ class RentServiceTest {
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
         when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(roomModel));
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(buildingModel));
 
         RentModel result = rentService.getRentById(rentId.toString(), token);
 
@@ -179,7 +177,6 @@ class RentServiceTest {
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(roomModel));
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
         when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(Optional.of(roomModel));
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn((Optional.of(buildingModel)));
         
         RentModel result = rentService.saveRent(rentModel, token);
         
@@ -198,7 +195,6 @@ class RentServiceTest {
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(roomModel));
         when(passwordEncoder.encode(tenant.getPhoneNum())).thenReturn("encodedPassword");
         when(roomService.updateRoom(roomModel.getRoomID(),roomModel, token)).thenReturn(Optional.of(roomModel));
-        when(dormService.getBuilding(anyInt(), any(JwtToken.class))).thenReturn(Optional.of(buildingModel));
 
         RentModel result = rentService.updateRent(rentId.toString(), rentModel, token);
 

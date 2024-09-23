@@ -40,7 +40,6 @@ public class RentConverter {
             .period(rentModel.getPeriod())
             .start_date(startDate)
             .dateOut(dateOut)
-            // .image_contract(ImageUtil.compressImage(file.getBytes()))
             .image_contract(file.getBytes())
             .createdAt(rentModel.getCreatedAt())
             .updatedAt(rentModel.getUpdatedAt())
@@ -78,7 +77,7 @@ public class RentConverter {
 
 
 
-    public static RentModel toRentModel(Rent rent, Tenant tenant, RoomModel room, BuildingModel building) {
+    public static RentModel toRentModel(Rent rent, Tenant tenant, RoomModel room) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate starDate = rent.getStart_date();
         String startDate_format = starDate.format(formatter);
@@ -100,10 +99,7 @@ public class RentConverter {
                 .roomID(room.getRoomID())
                 .roomNo(room.getRoomNo())
                 .roomPrice(room.getRoomPrice())
-                .building(BuildingModel.builder()
-                    .buildingID(building.getBuildingID())
-                    .buildingName(building.getBuildingName())
-                    .build())
+                .buildingID(room.getBuildingID())
                 .build())
             .tenant(TenantModel.builder()
                 .id(tenant.getId())
@@ -112,35 +108,23 @@ public class RentConverter {
                 .phoneNum(tenant.getPhoneNum())
                 .password(tenant.getPassword())
                 .build())
-            // .imageContract(ImageUtil.decompressImage(rent.getImage_contract()))
             .imageContract(rent.getImage_contract())
             .createdAt(rent.getCreatedAt())
             .updatedAt(rent.getUpdatedAt())
             .deletedAt(rent.getDeletedAt())
             .build();
-       
     }
 
     public static ContractModel toContractModel(Rent rent) {
         return ContractModel.builder()
             .rent_id(rent.getRent_id().toString())
-            // .image_contract(ImageUtil.decompressImage(rent.getImage_contract()))
             .image_contract(rent.getImage_contract())
             .build();
     }
-
-    // public static ContractModel toContractModel(Rent rent, MultipartFile file) throws IOException {
-    //     return ContractModel.builder()
-    //         .rent_id(rent.getRent_id().toString())
-    //         .image_contract(ImageUtil.decompressImage(file.getBytes()))
-    //         .build();
-    // }
-
-    // prepare image before save with rent
+    
     public static ContractModel toContractEntity(Rent rent, MultipartFile file) throws IOException {
         return ContractModel.builder()
             .rent_id(rent.getRent_id().toString())
-            // .image_contract(ImageUtil.compressImage(file.getBytes()))
             .image_contract(file.getBytes())
             .build();
     }

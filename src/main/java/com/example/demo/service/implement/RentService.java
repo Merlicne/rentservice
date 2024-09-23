@@ -61,8 +61,7 @@ public class RentService implements IRentService {
             Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId())
                     .orElseThrow(() -> new NotFoundException("Tenant not found"));
             RoomModel room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
-            BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
-            rentModels.add(RentConverter.toRentModel(rent, tenant, room, building));
+            rentModels.add(RentConverter.toRentModel(rent, tenant, room));
         }
         return rentModels;
     }
@@ -76,8 +75,7 @@ public class RentService implements IRentService {
         Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId())
                 .orElseThrow(() -> new NotFoundException("Tenant not found"));
         RoomModel room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
-        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
-        return RentConverter.toRentModel(rent, tenant, room, building);
+        return RentConverter.toRentModel(rent, tenant, room);
     }
 
     @Transactional
@@ -102,13 +100,11 @@ public class RentService implements IRentService {
         TenantValidator.validateTenant(tenant);
         Tenant tenant_repo = tenantRepository.save(tenant);
         rent.setTenant(tenant_repo);
-
         rent = rentRepository.save(rent);
         room.setRoomStatus(RoomStatus.RENTED);
         roomService.updateRoom(room.getRoomID(),room, token);
 
-        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
-        RentModel rentModel =  RentConverter.toRentModel(rent, tenant_repo, room, building);
+        RentModel rentModel =  RentConverter.toRentModel(rent, tenant_repo, room);
         
         return rentModel;
     }
@@ -149,8 +145,7 @@ public class RentService implements IRentService {
             roomService.updateRoom(room.getRoomID(), room, token);
         }
         RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
-        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
-        return RentConverter.toRentModel(newRent, newTenant, room, building);
+        return RentConverter.toRentModel(newRent, newTenant, room);
     }
 
     @Transactional
@@ -224,8 +219,7 @@ public class RentService implements IRentService {
         Tenant tenant = tenantRepository.findById(tenant_id).orElseThrow(() -> new NotFoundException("Tenant not found"));
         Rent rent = rentRepository.findByTenantId(tenant.getId()).orElseThrow(() -> new NotFoundException("Rent not found"));
         RoomModel room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
-        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
-        return RentConverter.toRentModel(rent, tenant, room, building);
+        return RentConverter.toRentModel(rent, tenant, room);
     }
 
     public RentModel getRentByRoomId(int room_id, JwtToken token) {
@@ -235,8 +229,7 @@ public class RentService implements IRentService {
         Rent rent = rentRepository.findByRoomId(room_id).orElseThrow(() -> new NotFoundException("Rent not found"));
         Tenant tenant = tenantRepository.findTenantById(rent.getTenant().getId()).orElseThrow(() -> new NotFoundException("Tenant not found"));
         RoomModel room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
-        BuildingModel building = dormService.getBuilding(room.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
-        return RentConverter.toRentModel(rent, tenant, room, building);
+        return RentConverter.toRentModel(rent, tenant, room);
     }
 
 

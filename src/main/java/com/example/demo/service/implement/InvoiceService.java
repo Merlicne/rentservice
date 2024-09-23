@@ -56,7 +56,7 @@ public class InvoiceService implements IInvoiceService {
         DormModel dormModel = dormService.getDormInfo(token).orElseThrow(() -> new NotFoundException("Dorm not found"));
         RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
         
-        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
+        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
         
         double electPerUnit = buildingModel.getElecPrice();
         double waterPerUnit = buildingModel.getWaterPrice();
@@ -92,7 +92,7 @@ public class InvoiceService implements IInvoiceService {
         TenantModel tenantModel = rentModel.getTenant();
         RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
         
-        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuilding().getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
+        BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
         double electPerUnit = buildingModel.getElecPrice();
         double waterPerUnit = buildingModel.getWaterPrice();
         String promptPay = dormModel.getTelephone();
