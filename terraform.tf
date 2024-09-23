@@ -55,7 +55,7 @@ spec:
         - name: SECURITY_JWT_EXPIRATION_TIME
           value: ${var.JWT_EXPIRATION_TIME}
         - name: SPRING_JPA_HIBERNATE_DDL-AUTO
-          value: "create"
+          value: "update"
         - name: SPRING_JPA_SHOW_SQL
           value: "false"
         - name: SECURITY_JWT_ISSUER
