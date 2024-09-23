@@ -15,7 +15,6 @@ import com.example.demo.enumurated.RoomStatus;
 @NoArgsConstructor
 public class RoomModel {
     private int roomID ;
-    // private int buildingID;
     private int buildingID;
     private String roomNo;
     private int roomPrice;
