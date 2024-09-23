@@ -40,6 +40,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler{
     // default
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseBody> handleAllException(Exception ex) {
-        return new ResponseEntity<>(new ErrorResponseBody(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ErrorResponseBody(HttpStatus.INTERNAL_SERVER_ERROR.value(),"Error :: "+ ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

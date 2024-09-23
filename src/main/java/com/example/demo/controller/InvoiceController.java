@@ -53,9 +53,9 @@ public class InvoiceController {
 
     @PostMapping("/invoice")
     public ResponseBody<InvoiceModel> createInvoice(@RequestHeader("Authorization") String token, @RequestBody InvoiceModel invoiceModel) {
+        System.out.println("CONTROLLER : Create invoice" + invoiceModel.getRent().getRentId());
         token = token.substring(7); 
         JwtToken jwtToken = JwtToken.builder().token(token).build();
-
         InvoiceModel invoice = invoiceService.createInvoice(invoiceModel, jwtToken);
         return new ResponseBody<>(HttpStatus.CREATED.value(), "Invoice created successfully",invoice);
     }

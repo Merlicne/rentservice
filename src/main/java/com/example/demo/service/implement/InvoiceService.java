@@ -46,6 +46,7 @@ public class InvoiceService implements IInvoiceService {
 
     @Transactional
     public InvoiceModel createInvoice(InvoiceModel invoiceModel, JwtToken token){ 
+        System.out.println("SERVICE : Create invoice" + invoiceModel.getRent().getRentId());
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
 
