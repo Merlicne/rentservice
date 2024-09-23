@@ -28,7 +28,7 @@ public class TenantController {
 
     private final IRentService rentService;
 
-    @GetMapping("/auth/find/{token}")
+    @GetMapping("/auth/find/{tenantToken}")
     public ResponseBody<String> isTenantValid(@PathVariable String tenantToken) {
         authenticationService.isTenantValid(tenantToken);
         return new ResponseBody<>(200, "Tenant is valid", "Tenant is valid");

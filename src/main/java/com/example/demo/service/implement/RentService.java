@@ -86,7 +86,7 @@ public class RentService implements IRentService {
         
         // save tenant to repository
         Tenant tenant = TenantConverter.toTenantEntity(rentRequest);
-        tenant.setToken(TenantTokenGenerator.generateToken(tenant.getPhoneNum()));
+        tenant.setId(TenantTokenGenerator.generateToken(tenant.getPhoneNum()));
         tenant.setPassword(passwordEncoder.encode(tenant.getPhoneNum()));
         tenant.setRole(Role.TENANT);
         TenantValidator.validateTenant(tenant);
@@ -117,7 +117,7 @@ public class RentService implements IRentService {
         Tenant tenant = tenantRepository.findTenantById(tenantUuid).orElseThrow(() -> new NotFoundException("Tenant not found"));
 
         Tenant newTenant = TenantConverter.toTenantEntity(rentRequest);
-        newTenant.setToken(TenantTokenGenerator.generateToken(newTenant.getPhoneNum()));
+        newTenant.setId(tenant.getId());
         newTenant.setPassword(passwordEncoder.encode(newTenant.getPhoneNum()));
         newTenant.setRole(Role.TENANT);
         newTenant.setCreatedAt(tenant.getCreatedAt());

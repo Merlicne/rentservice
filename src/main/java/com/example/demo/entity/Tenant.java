@@ -39,7 +39,6 @@ import java.time.LocalDateTime;
 
 public class Tenant implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private String Id;
 
@@ -54,9 +53,6 @@ public class Tenant implements UserDetails {
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "token")
-    private String token;
 
     private Role role;
 
@@ -76,7 +72,7 @@ public class Tenant implements UserDetails {
 
     @Override
     public String getUsername() {
-        return token;
+        return Id;
     }
 
     @Override

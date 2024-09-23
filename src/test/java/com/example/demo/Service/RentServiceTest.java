@@ -92,7 +92,6 @@ class RentServiceTest {
                 .firstName("John")
                 .lastName("Doe")
                 .phoneNum("1234567890")
-                .token("1234")
                 .password("password")
                 .build();
         rent = Rent.builder()

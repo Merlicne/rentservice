@@ -36,19 +36,11 @@ public class TenantValidator {
         }
     }
 
-    // validate token
-    public static void validateToken(Tenant Tenant) {
-        if (Tenant.getToken() == null || Tenant.getToken().isEmpty()) {
-            throw new BadRequestException("Tenant token cannot be empty");
-        }
-    }
-
 
     public static void validateTenant(Tenant Tenant) {
         validateTenantFirstName(Tenant);
         validateTenantLastName(Tenant);
         validateTenantPhoneNum(Tenant);
         validatePassword(Tenant);
-        validateToken(Tenant);
     }
 }

@@ -15,7 +15,6 @@ public class TenantConverter {
             .lastName(rentModel.getTenant().getLastName())
             .phoneNum(rentModel.getTenant().getPhoneNum())
             .password(rentModel.getTenant().getPassword())
-            .token(rentModel.getTenant().getToken())
             .build();
     }
 
@@ -42,7 +41,6 @@ public class TenantConverter {
             .lastName(tenant.getLastName())
             .phoneNum(tenant.getPhoneNum())
             .password(tenant.getPassword())
-            .token(tenant.getToken())
             .build();
     }
 
