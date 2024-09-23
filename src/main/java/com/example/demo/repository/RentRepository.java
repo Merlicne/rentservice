@@ -12,7 +12,7 @@ import com.example.demo.entity.Rent;
 
 public interface RentRepository extends JpaRepository<Rent, UUID>{
     // get rent which not deleted
-    @Query("SELECT r FROM Rent r WHERE r.deletedAt IS NULL")
+    @Query("SELECT r FROM Rent r WHERE r.deletedAt IS NULL ORDER BY r.start_date DESC")
     public List<Rent> findAllRents();
 
     // get rent by id which not deleted

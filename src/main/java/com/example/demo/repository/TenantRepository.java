@@ -14,7 +14,7 @@ import com.example.demo.entity.Tenant;
 public interface TenantRepository extends JpaRepository<Tenant, String>{
 
     // get tenant which not deleted
-    @Query("SELECT t FROM Tenant t WHERE t.deletedAt IS NULL")
+    @Query("SELECT t FROM Tenant t WHERE t.deletedAt IS NULL ORDER BY t.createdAt DESC")
     public List<Tenant> findAllTenants();
 
     // get tenant by id which not deleted
