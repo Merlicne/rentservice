@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,6 @@ import com.example.demo.model.TenantModel;
 import com.example.demo.model.response.ResponseBody;
 import com.example.demo.service.IAuthenticationService;
 import com.example.demo.service.IRentService;
-import com.example.demo.service.ITenantService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +35,7 @@ public class TenantController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseBody<JwtToken> login(LoginRequest loginRequest) {
+    public ResponseBody<JwtToken> login(@RequestBody LoginRequest loginRequest) {
         JwtToken token = authenticationService.login(loginRequest);
         return new ResponseBody<>(200, "Login successful", token);
     }
