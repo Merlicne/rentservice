@@ -88,7 +88,7 @@ class RentServiceTest {
                 .token("token")
                 .build();
         tenant = Tenant.builder()
-                .Id(UUID.randomUUID())
+                .Id("ID")
                 .firstName("John")
                 .lastName("Doe")
                 .phoneNum("1234567890")
@@ -135,7 +135,7 @@ class RentServiceTest {
     void testGetAllRents(){
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findAllRents()).thenReturn(List.of(rent));
-        when(tenantRepository.findTenantById(any(UUID.class))).thenReturn(Optional.of(tenant));
+        when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(roomService.getRoom(1, token)).thenReturn(roomModel);
 
         Iterable<RentModel> rents = rentService.getAllRents(token);
@@ -149,7 +149,7 @@ class RentServiceTest {
         UUID rentId = UUID.randomUUID();
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
-        when(tenantRepository.findTenantById(any(UUID.class))).thenReturn(Optional.of(tenant));
+        when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
 
         RentModel result = rentService.getRentById(rentId.toString(), token);
@@ -178,7 +178,7 @@ class RentServiceTest {
         UUID rentId = UUID.randomUUID();
         when(jwtService.extractRole(anyString())).thenReturn(Role.ADMIN);
         when(rentRepository.findRentById(any(UUID.class))).thenReturn(Optional.of(rent));
-        when(tenantRepository.findTenantById(any(UUID.class))).thenReturn(Optional.of(tenant));
+        when(tenantRepository.findTenantById(anyString())).thenReturn(Optional.of(tenant));
         when(rentRepository.save(any(Rent.class))).thenReturn(rent);
         when(tenantRepository.save(any(Tenant.class))).thenReturn(tenant);
         when(roomService.getRoom(anyInt(), any(JwtToken.class))).thenReturn(roomModel);
