@@ -26,6 +26,6 @@ public interface TenantRepository extends JpaRepository<Tenant, String>{
     public List<Tenant> findDeletedTenants();
 
     @Query(value = "SELECT * FROM Tenants t WHERE t.id = ?1", nativeQuery=true)
-    public Optional<Tenant> findByUsername(String token);
+    public Optional<Tenant> findByUsername(String id);
 
 }
