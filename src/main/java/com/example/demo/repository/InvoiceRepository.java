@@ -14,7 +14,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, UUID>{
     public List<Invoice> findByRentId(UUID rent_id);
 
     //get All invoices which deletedAt is null
-    @Query(value = "SELECT * FROM Invoice WHERE deletedAt IS NULL", nativeQuery = true)
+    @Query(value = "SELECT * FROM Invoice WHERE deleted_at IS NULL", nativeQuery = true)
     public List<Invoice> findAllInvoices(); 
 
 
