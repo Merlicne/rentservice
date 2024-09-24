@@ -28,4 +28,6 @@ public interface TenantRepository extends JpaRepository<Tenant, String>{
     @Query(value = "SELECT * FROM Tenants t WHERE t.id = ?1", nativeQuery=true)
     public Optional<Tenant> findByUsername(String id);
 
+    
 }
+

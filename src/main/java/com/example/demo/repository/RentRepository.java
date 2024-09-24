@@ -29,3 +29,5 @@ public interface RentRepository extends JpaRepository<Rent, UUID>{
     @Query(value = "SELECT * FROM Rent r WHERE r.room_id = ?1", nativeQuery = true)
     public Optional<Rent> findByRoomId(int room_id);
 }
+
+

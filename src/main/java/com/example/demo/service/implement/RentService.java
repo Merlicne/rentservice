@@ -47,7 +47,7 @@ public class RentService implements IRentService {
     private final TenantRepository tenantRepository;
 
     private final IRoomService roomService;
-    private final IDormService dormService;
+    // private final IDormService dormService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 

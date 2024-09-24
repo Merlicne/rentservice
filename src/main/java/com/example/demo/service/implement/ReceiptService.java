@@ -68,6 +68,7 @@ public class ReceiptService implements IReceiptService {
             Receipt receipt = ReceiptConverter.toEntity(receiptModel, file);
             receipt = receiptRepository.save(receipt);
             invoice.setStatus(InvoiceStatus.ON_PROCESSED);
+            invoiceRepository.save(invoice);
             return ReceiptConverter.toModel(receipt); 
         } catch (IOException e) {
             throw new BadRequestException("Failed to save image");

@@ -77,4 +77,5 @@ public class Invoice {
     @Column(name = "deletedAt")
     private LocalDateTime deletedAt;
 
+
 }
