@@ -137,12 +137,12 @@ public class RentService implements IRentService {
         newTenant = tenantRepository.save(newTenant);
         newRent.setTenant(newTenant);
         newRent = rentRepository.save(newRent);
+        RoomModel room = null;
         if (newRent.getDateOut() != null && newRent.getDateOut().equals(rent.getDateOut())) {
-            RoomModel room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
+            room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
             room.setRoomStatus(RoomStatus.NOT_RENTED);
-            roomService.updateRoom(room.getRoomID(), room, token);
+            room = roomService.updateRoom(room.getRoomID(), room, token).orElseThrow(() -> new NotFoundException("Room not found"));
         }
-        RoomModel room = roomService.getRoom(rentRequest.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
         return RentConverter.toRentModel(newRent, newTenant, room);
     }
 
