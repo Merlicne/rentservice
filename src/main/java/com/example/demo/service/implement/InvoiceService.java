@@ -96,8 +96,7 @@ public class InvoiceService implements IInvoiceService {
 
         UUID uuid = UUID.fromString(invoice_id);
         Invoice invoice = invoiceRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Invoice not found"));
-        
-        Rent rent = rentRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
+        Rent rent = rentRepository.findById(invoice.getRent_id()).orElseThrow(() -> new NotFoundException("Rent not found"));
         DormModel dormModel = dormService.getDormInfo(token).orElseThrow(() -> new NotFoundException("Dorm not found"));
         Tenant tenant = rent.getTenant();
         TenantModel tenantModel = TenantConverter.toTenantModel(tenant);

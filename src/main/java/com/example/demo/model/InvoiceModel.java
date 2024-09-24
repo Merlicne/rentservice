@@ -37,5 +37,24 @@ public class InvoiceModel {
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 
+// - invoiceId: string
+// - status: InvoiceStatus
+// - waterUnit: double
+// - waterPrice: double
+// - waterTotal: double
+// - electUnit: double
+// - electPrice: double
+// - electTotal: double
+// - roomUnit: double
+// - roomPrice: double
+// - roomTotal: double
+// - total: double
+// - qrcode: string
+// - monthly: string
+// - dueDate: string
+// - recordDate: string
+// - rent: RentModel
+// - dorm: DormModel
+
 
 }
