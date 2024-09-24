@@ -36,7 +36,9 @@ public class RoomService implements IRoomService {
         if (response.getStatus() < 200 || response.getStatus() >= 300) {
             throw new RuntimeException("Error: " + response.getMessage());
         }
-    
+        if (response.getData() == null){
+            return Optional.empty();
+        }
         return Optional.of(response.getData());
     }
 
