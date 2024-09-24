@@ -103,6 +103,17 @@ public class ReceiptService implements IReceiptService {
         receiptRepository.save(receipt);
     }
 
+    @Transactional
+    public void approveReceipt(String id, JwtToken token) {
+        Role role = jwtService.extractRole(token.getToken());
+        RoleValidation.allowRoles(role, Role.ADMIN);
+
+        Invoice invoice = invoiceRepository.findById(UUID.fromString(id)).orElseThrow(() -> new NotFoundException("Invoice not found"));
+        invoice.setStatus(InvoiceStatus.PAID);
+        invoiceRepository.save(invoice);
+        
+    }
+
 
 
 }

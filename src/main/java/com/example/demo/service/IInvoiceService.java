@@ -23,4 +23,6 @@ public interface IInvoiceService {
 
     @Retryable(value = { Exception.class }, maxAttempts = 5)
     public void deleteInvoiceById(String invoice_id, JwtToken token);
+
+    
 }

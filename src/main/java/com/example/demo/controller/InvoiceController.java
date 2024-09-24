@@ -77,4 +77,6 @@ public class InvoiceController {
         invoiceService.deleteInvoiceById(invoice_id, jwtToken);
         return new ResponseBody<>(HttpStatus.OK.value(),"Invoice deleted successfully",null);
     }
+
+    
 }

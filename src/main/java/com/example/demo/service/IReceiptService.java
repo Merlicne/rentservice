@@ -22,4 +22,6 @@ public interface IReceiptService {
     @Retryable(value = { Exception.class }, maxAttempts = 5)
     public List<ReceiptModel> getAllReceipts(JwtToken token);
 
+    @Retryable(value = { Exception.class }, maxAttempts = 5)
+    public void approveReceipt(String id, JwtToken token);
 }

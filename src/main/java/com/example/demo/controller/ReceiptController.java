@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.model.InvoiceModel;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.ReceiptModel;
 import com.example.demo.model.response.ResponseBody;
@@ -78,6 +79,14 @@ public class ReceiptController {
         return new ResponseBody<>(HttpStatus.OK.value(), "Receipt deleted successfully", "Receipt deleted successfully");
     }
     
+    @PutMapping("/receipt/{id}/approved")
+    public ResponseBody<InvoiceModel> approveInvoice(@RequestHeader("Authorization") String token, @PathVariable String id) {
+        token = token.substring(7); 
+        JwtToken jwtToken = JwtToken.builder().token(token).build();
+
+        receiptService.approveReceipt(id, jwtToken);
+        return new ResponseBody<>(HttpStatus.OK.value(),"Invoice approved successfully", null);
+    }
 
 
     
