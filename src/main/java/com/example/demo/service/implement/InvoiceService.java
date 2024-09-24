@@ -45,8 +45,11 @@ public class InvoiceService implements IInvoiceService {
     private final RentRepository rentRepository;
     
     private final IRentService rentService;
+
+    // webclient
     private final IDormService dormService;
     private final IRoomService roomService;
+
     private final JwtService jwtService;
 
 
@@ -80,7 +83,7 @@ public class InvoiceService implements IInvoiceService {
                                                         promptPay);
 
         
-        if (invoiceModel.getInvoiceId() == null && invoiceModel.getInvoiceId().isEmpty()) {
+        if (invoiceModel.getInvoiceId() == null) {
             // invoiceModel.setStatus(inv);
             invoiceModel.setStatus(InvoiceStatus.UNPAID);
         }
