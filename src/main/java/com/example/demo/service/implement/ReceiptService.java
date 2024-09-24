@@ -56,7 +56,7 @@ public class ReceiptService implements IReceiptService {
     
     public ReceiptModel createReceipt(String invoiceID, MultipartFile file, JwtToken token) {
         Role role = jwtService.extractRole(token.getToken());
-        RoleValidation.allowRoles(role, Role.ADMIN);
+        RoleValidation.allowRoles(role, Role.ADMIN, Role.TENANT);
         // check if they exist
         Invoice invoice = invoiceRepository.findById(UUID.fromString(invoiceID)).orElseThrow(() -> new NotFoundException("Invoice not found"));
 

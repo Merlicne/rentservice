@@ -65,6 +65,7 @@ public class RentConverter {
         if (rentModel.getRoom() != null) {
             roomId = rentModel.getRoom().getRoomID();
         }
+        
         return Rent.builder()
             .rent_id(rentID)
             .room_id(roomId)
