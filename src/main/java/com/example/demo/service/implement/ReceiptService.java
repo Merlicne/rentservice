@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Invoice;
 import com.example.demo.entity.Receipt;
-import com.example.demo.model.InvoiceStatus;
+import com.example.demo.enumurated.InvoiceStatus;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.ReceiptModel;
 import com.example.demo.model.Role;

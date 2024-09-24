@@ -2,6 +2,7 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
+import com.example.demo.enumurated.InvoiceStatus;
 
 import lombok.Builder;
 import lombok.Data;

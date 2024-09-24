@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.entity.Invoice;
 import com.example.demo.entity.Rent;
 import com.example.demo.entity.Tenant;
+import com.example.demo.enumurated.InvoiceStatus;
 // import com.example.demo.entity.Rent;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.middleware.JwtService;
@@ -18,7 +19,6 @@ import com.example.demo.model.BuildingModel;
 import com.example.demo.model.DormModel;
 import com.example.demo.model.InvoiceDetail;
 import com.example.demo.model.InvoiceModel;
-import com.example.demo.model.InvoiceStatus;
 import com.example.demo.model.JwtToken;
 import com.example.demo.model.RentModel;
 import com.example.demo.model.Role;
@@ -150,9 +150,10 @@ public class InvoiceService implements IInvoiceService {
         Invoice invoice = invoiceRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Invoice not found"));
 
         // validate
+        
         InvoiceValidator.validateInvoice(invoiceModel);
-
         invoiceModel.setCreatedAt(invoice.getCreatedAt());
+        invoiceModel.setInvoiceId(invoice_id);
         InvoiceModel new_invoiceModel = createInvoice(invoiceModel, token);
         return new_invoiceModel;
     }
