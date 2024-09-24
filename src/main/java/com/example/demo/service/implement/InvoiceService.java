@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Invoice;
+import com.example.demo.entity.Rent;
+import com.example.demo.entity.Tenant;
 // import com.example.demo.entity.Rent;
 import com.example.demo.exception.NotFoundException;
 import com.example.demo.middleware.JwtService;
@@ -23,9 +25,12 @@ import com.example.demo.model.Role;
 import com.example.demo.model.RoomModel;
 import com.example.demo.model.TenantModel;
 import com.example.demo.repository.InvoiceRepository;
+import com.example.demo.repository.RentRepository;
 import com.example.demo.service.IInvoiceService;
 import com.example.demo.service.IRentService;
 import com.example.demo.util.converter.InvoiceConverter;
+import com.example.demo.util.converter.RentConverter;
+import com.example.demo.util.converter.TenantConverter;
 import com.example.demo.util.validator.InvoiceValidator;
 import com.example.demo.util.validator.RoleValidation;
 import com.example.demo.webClient.IDormService;
@@ -37,6 +42,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class InvoiceService implements IInvoiceService {
     private final InvoiceRepository invoiceRepository;
+    private final RentRepository rentRepository;
     
     private final IRentService rentService;
     private final IDormService dormService;
@@ -91,11 +97,12 @@ public class InvoiceService implements IInvoiceService {
         UUID uuid = UUID.fromString(invoice_id);
         Invoice invoice = invoiceRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Invoice not found"));
         
-        RentModel rentModel = rentService.getRentById(invoice.getRent_id().toString(), token);
+        Rent rent = rentRepository.findById(uuid).orElseThrow(() -> new NotFoundException("Rent not found"));
         DormModel dormModel = dormService.getDormInfo(token).orElseThrow(() -> new NotFoundException("Dorm not found"));
-        TenantModel tenantModel = rentModel.getTenant();
-        RoomModel roomModel = roomService.getRoom(rentModel.getRoom().getRoomID(), token).orElseThrow(() -> new NotFoundException("Room not found"));
-        
+        Tenant tenant = rent.getTenant();
+        TenantModel tenantModel = TenantConverter.toTenantModel(tenant);
+        RoomModel roomModel = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
+        RentModel rentModel = RentConverter.toRentModel(rent, tenant, roomModel);
         BuildingModel buildingModel = dormService.getBuilding(roomModel.getBuildingID(), token).orElseThrow(() -> new NotFoundException("Building not found"));
         double electPerUnit = buildingModel.getElecPrice();
         double waterPerUnit = buildingModel.getWaterPrice();
