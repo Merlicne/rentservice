@@ -1,5 +1,6 @@
 package com.example.demo.service.implement;
 
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,6 +112,7 @@ public class RentService implements IRentService {
 
     @Transactional
     public RentModel updateRent(String rentId, RentModel rentRequest,  JwtToken token) {
+        System.out.println("update rent");
         Role role = jwtService.extractRole(token.getToken());
         RoleValidation.allowRoles(role, Role.ADMIN);
         UUID rentUuid = UUID.fromString(rentId);
@@ -134,10 +136,12 @@ public class RentService implements IRentService {
 
 
         // save to db
+        System.out.println("new rent: "+newRent);
         newTenant = tenantRepository.save(newTenant);
         newRent.setTenant(newTenant);
         newRent = rentRepository.save(newRent);
         RoomModel room = null;
+        System.out.println("Update room status");
         if (newRent.getDateOut() != null && newRent.getDateOut().equals(rent.getDateOut())) {
             room = roomService.getRoom(rent.getRoom_id(), token).orElseThrow(() -> new NotFoundException("Room not found"));
             room.setRoomStatus(RoomStatus.NOT_RENTED);
