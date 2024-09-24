@@ -61,14 +61,16 @@ public class RentConverter {
             rentID = UUID.fromString(rentModel.getRentId());
         }
 
-
+        int roomId = 0;
+        if (rentModel.getRoom() != null) {
+            roomId = rentModel.getRoom().getRoomID();
+        }
         return Rent.builder()
             .rent_id(rentID)
-            .room_id(rentModel.getRoom().getRoomID())
+            .room_id(roomId)
             .period(rentModel.getPeriod())
             .start_date(startDate)
             .dateOut(dateOut)
-            // .image_contract(ImageUtil.compressImage(file.getBytes()))
             .createdAt(rentModel.getCreatedAt())
             .updatedAt(rentModel.getUpdatedAt())
             .deletedAt(rentModel.getDeletedAt())
