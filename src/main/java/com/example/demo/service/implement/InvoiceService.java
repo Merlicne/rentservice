@@ -80,7 +80,7 @@ public class InvoiceService implements IInvoiceService {
                                                         promptPay);
 
         
-        if invoiceModel.getInvoiceId() == null && invoiceModel.getInvoiceId().isEmpty()) {
+        if (invoiceModel.getInvoiceId() == null && invoiceModel.getInvoiceId().isEmpty()) {
             // invoiceModel.setStatus(inv);
             invoiceModel.setStatus(InvoiceStatus.UNPAID);
         }
