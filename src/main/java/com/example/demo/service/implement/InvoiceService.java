@@ -80,8 +80,10 @@ public class InvoiceService implements IInvoiceService {
                                                         promptPay);
 
         
-        
-        invoiceModel.setStatus(InvoiceStatus.UNPAID);
+        if invoiceModel.getInvoiceId() == null && invoiceModel.getInvoiceId().isEmpty()) {
+            // invoiceModel.setStatus(inv);
+            invoiceModel.setStatus(InvoiceStatus.UNPAID);
+        }
         Invoice invoice = InvoiceConverter.toEntity(invoiceModel, rentModel);
         Invoice invoiceEntity = invoiceRepository.save(invoice);
         System.out.println("SERVICE : Create invoice" + invoiceModel.getRent().getRentId());
